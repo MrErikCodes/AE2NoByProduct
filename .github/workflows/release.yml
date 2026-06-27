@@ -51,33 +51,21 @@ jobs:
         id: props
         run: echo "mc=$(grep -E '^mc_version=' gradle.properties | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
-      # GitHub-only escape hatch: if the release notes contain [skip-stores], the jar is
-      # still attached to the GitHub Release but CurseForge/Modrinth are skipped. Use this
-      # when that version was already published to the stores (an empty id makes mc-publish
-      # skip that platform).
-      - name: Decide store targets
-        id: targets
-        env:
-          BODY: ${{ github.event.release.body }}
-        run: |
-          if printf '%s' "$BODY" | grep -qiF '[skip-stores]'; then
-            echo "Release marked [skip-stores]: uploading to the GitHub Release only, skipping CurseForge/Modrinth."
-            echo "cf=" >> "$GITHUB_OUTPUT"
-            echo "mr=" >> "$GITHUB_OUTPUT"
-          else
-            echo "cf=1590300" >> "$GITHUB_OUTPUT"
-            echo "mr=ae2-no-byproduct" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Publish (GitHub always; CurseForge/Modrinth unless skipped)
+      # Two publish paths. By default we publish to GitHub + CurseForge + Modrinth.
+      # If the release notes contain [skip-stores] (e.g. that version is already on the
+      # stores), the GitHub-only step runs instead. It passes NO CurseForge/Modrinth
+      # inputs, so mc-publish never contacts them. (An empty curseforge-id does NOT skip:
+      # mc-publish would auto-detect the project by slug and fail.)
+      - name: Publish to GitHub, CurseForge, and Modrinth
+        if: ${{ !contains(github.event.release.body, '[skip-stores]') }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          curseforge-id: ${{ steps.targets.outputs.cf }}
+          curseforge-id: 1590300
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
 
-          modrinth-id: ${{ steps.targets.outputs.mr }}
+          modrinth-id: ae2-no-byproduct
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # The compiled mod jar (excludes any -sources / -dev jars).
@@ -89,6 +77,23 @@ jobs:
           changelog: ${{ github.event.release.body }}
 
           # What this jar actually supports. Update these when loaders / versions change.
+          loaders: forge
+          game-versions: ${{ steps.props.outputs.mc }}
+          java: "17"
+
+      - name: Publish to GitHub only (stores skipped via [skip-stores])
+        if: ${{ contains(github.event.release.body, '[skip-stores]') }}
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          files: build/libs/!(*-sources|*-dev).jar
+
+          name: ${{ github.event.release.name }}
+          version: ${{ github.event.release.tag_name }}
+          version-type: release
+          changelog: ${{ github.event.release.body }}
+
           loaders: forge
           game-versions: ${{ steps.props.outputs.mc }}
           java: "17"
