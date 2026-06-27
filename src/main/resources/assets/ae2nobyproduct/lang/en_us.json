@@ -1,4 +1,8 @@
 {
   "tooltip.ae2nobyproduct.on": "Remove byproducts: ON",
-  "tooltip.ae2nobyproduct.off": "Remove byproducts: OFF"
+  "tooltip.ae2nobyproduct.off": "Remove byproducts: OFF",
+  "item.ae2nobyproduct.byproduct_remover": "Byproduct Remover",
+  "message.ae2nobyproduct.removed": "Removed byproducts from %s pattern(s)",
+  "message.ae2nobyproduct.none": "No byproducts to remove",
+  "message.ae2nobyproduct.disabled": "Byproduct removal is disabled in the config"
 }

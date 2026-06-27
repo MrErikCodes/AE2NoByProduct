@@ -14,5 +14,7 @@ public class AE2NoByProduct {
         net.minecraftforge.fml.ModLoadingContext.get().registerConfig(
             net.minecraftforge.fml.config.ModConfig.Type.SERVER, dev.erikcodes.ae2nobyproduct.config.Config.SPEC);
         dev.erikcodes.ae2nobyproduct.network.Network.register();
+        dev.erikcodes.ae2nobyproduct.registry.ModItems.register(
+            net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus());
     }
 }

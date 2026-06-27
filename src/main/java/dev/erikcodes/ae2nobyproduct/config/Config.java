@@ -7,6 +7,7 @@ public final class Config {
     private static final ForgeConfigSpec.BooleanValue ENABLE_FEATURE;
     private static final ForgeConfigSpec.BooleanValue ALLOW_PLAYER_TOGGLE;
     private static final ForgeConfigSpec.BooleanValue DEFAULT_STRIP;
+    private static final ForgeConfigSpec.BooleanValue CONSUME_ON_USE;
 
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
@@ -16,10 +17,13 @@ public final class Config {
                 .define("allowPlayerToggle", true);
         DEFAULT_STRIP = b.comment("Default for new players; also the forced value when allowPlayerToggle=false.")
                 .define("defaultStrip", false);
+        CONSUME_ON_USE = b.comment("If true, the Byproduct Remover item is consumed (shrinks by 1) after successfully cleaning at least one pattern.")
+                .define("consumeOnUse", false);
         SPEC = b.build();
     }
     private Config() {}
     public static boolean enableFeature() { return ENABLE_FEATURE.get(); }
     public static boolean allowPlayerToggle() { return ALLOW_PLAYER_TOGGLE.get(); }
     public static boolean defaultStrip() { return DEFAULT_STRIP.get(); }
+    public static boolean consumeOnUse() { return CONSUME_ON_USE.get(); }
 }
