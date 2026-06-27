@@ -16,7 +16,12 @@ public final class ClientEvents {
     private static final int OFFSET_Y = 90;
     @SubscribeEvent
     public static void onScreenInit(ScreenEvent.Init.Post e) {
-        if (e.getScreen() instanceof PatternEncodingTermScreen<?> screen && ClientByproductState.showButton()) {
+        // Always add the button on the Pattern Encoding screen; its visibility is driven
+        // live by ClientByproductState.showButton() in the button's render. This avoids a
+        // race where the server's sync packet can arrive after this screen-init fires
+        // (Forge sends the open-screen packet before our sync), which would otherwise
+        // leave the button missing on the first terminal open of a session.
+        if (e.getScreen() instanceof PatternEncodingTermScreen<?> screen) {
             AbstractContainerScreen<?> acs = screen;
             int x = acs.getGuiLeft() + OFFSET_X;
             int y = acs.getGuiTop() + OFFSET_Y;
