@@ -38,21 +38,25 @@ src/main/java/dev/erikcodes/ae2nobyproduct/
   ├── AE2NoByProduct.java          # Mod entry point
   ├── config/                      # Server config (TOML, Forge)
   ├── client/                      # Client widgets + cached state (toggle button, ClientByproductState)
+  ├── config/                      # Server config (Forge TOML)
   ├── core/                        # EffectiveState, ByproductState (NBT), ByproductService
   ├── event/                       # Server events (sync state on terminal open)
+  ├── item/                        # Byproduct Remover item (right-click a Pattern Provider)
   ├── mixin/                       # Mixin classes
   │   ├── PatternEncodingTermMenuMixin.java       # Server-side: strips byproducts at encode time
   │   └── client/                  # Client-side: toolbar toggle button
   │       ├── AEBaseScreenInvoker.java             # @Invoker for AE2's addToLeftToolbar
   │       └── PatternEncodingTermScreenMixin.java
-  └── network/                     # Packets for syncing player toggle state
+  ├── network/                     # Packets for syncing player toggle state
+  └── registry/                    # Item registration + creative tab
 ```
 
 **Architecture at a glance**
 
-- The mod is **Mixin-based**. There are no custom blocks or items — everything is injected into AE2's existing classes.
+- The mod is primarily **Mixin-based**: byproduct stripping and the toolbar button are injected into AE2's existing classes. It also registers one item (the Byproduct Remover) that uses AE2's public pattern API.
 - **Server-side Mixin** (`PatternEncodingTermMenuMixin`): intercepts pattern encoding in `PatternEncodingTermMenu` and strips extra output slots if the player's toggle is ON. Stripping is server-authoritative and cannot be bypassed by clients.
 - **Client-side Mixin** (`PatternEncodingTermScreenMixin`): injects the toggle button into AE2's left-hand toolbar at the same position and style as native AE2 buttons.
+- **Byproduct Remover item** (`item/ByproductRemoverItem`): a server-side `useOn` handler that reads a Pattern Provider's pattern inventory via AE2's public API (`PatternProviderBlockEntity.getLogic().getPatternInv()`), decodes each pattern, and re-encodes processing patterns keeping only the first output.
 - **Player data**: the per-player toggle state is stored in the player's persistent NBT (`Player.getPersistentData()` under the `PlayerPersisted` sub-tag), which survives relog, server restart, and death.
 
 ---
