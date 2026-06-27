@@ -11,9 +11,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-// remap = false: every target here belongs to AE2 (another mod), whose member
-// names are identical in dev and production, so the Mixin annotation processor
-// must not try to map them to Minecraft searge names (which would fail the build).
+// This mixin lives in :common and is applied on BOTH Forge and Fabric.
+//
+// Class- and @Redirect-level remap = false: the target class (PatternEncodingTermMenu) and the
+// injected method name (encodeProcessingPattern) belong to AE2, whose names are stable across
+// loaders and absent from the Minecraft mappings — trying to remap them would fail the build.
+//
+// The @At INVOKE target, however, is remap = true: its descriptor contains a Minecraft type
+// (ItemStack) whose runtime name differs per loader (intermediary class_1799 on Fabric, named on
+// Forge). With remap = true the Mixin AP records a refmap entry that rewrites only that MC type
+// per platform while leaving the AE2 owner/method untouched — making the injector resolve on both.
 @Mixin(value = PatternEncodingTermMenu.class, remap = false)
 public abstract class PatternEncodingTermMenuMixin {
 
@@ -23,7 +30,7 @@ public abstract class PatternEncodingTermMenuMixin {
         at = @At(
             value = "INVOKE",
             target = "Lappeng/api/crafting/PatternDetailsHelper;encodeProcessingPattern([Lappeng/api/stacks/GenericStack;[Lappeng/api/stacks/GenericStack;)Lnet/minecraft/world/item/ItemStack;",
-            remap = false
+            remap = true
         )
     )
     private ItemStack ae2nobyproduct$stripByproducts(GenericStack[] inputs, GenericStack[] outputs) {

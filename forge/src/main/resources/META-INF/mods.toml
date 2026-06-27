@@ -11,6 +11,12 @@ description = '''
 Strips byproducts from AE2 processing patterns at encode time.
 '''
 
+# Shared server-side stripping mixin (bundled from :common) + Forge-only client toolbar button mixin.
+[[mixins]]
+config = "ae2nobyproduct.mixins.json"
+[[mixins]]
+config = "ae2nobyproduct.client.mixins.json"
+
 [[dependencies.ae2nobyproduct]]
 modId = "forge"
 mandatory = true
@@ -29,5 +35,12 @@ side = "BOTH"
 modId = "architectury"
 mandatory = true
 versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.ae2nobyproduct]]
+modId = "ae2"
+mandatory = true
+versionRange = "[15,)"
 ordering = "AFTER"
 side = "BOTH"

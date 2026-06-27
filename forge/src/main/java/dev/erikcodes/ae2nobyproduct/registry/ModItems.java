@@ -1,6 +1,6 @@
 package dev.erikcodes.ae2nobyproduct.registry;
 
-import dev.erikcodes.ae2nobyproduct.AE2NoByProduct;
+import dev.erikcodes.ae2nobyproduct.CommonMod;
 import dev.erikcodes.ae2nobyproduct.item.ByproductRemoverItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -12,13 +12,13 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-@Mod.EventBusSubscriber(modid = AE2NoByProduct.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = CommonMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModItems {
 
     private ModItems() {}
 
     public static final DeferredRegister<Item> ITEMS =
-        DeferredRegister.create(ForgeRegistries.ITEMS, AE2NoByProduct.MOD_ID);
+        DeferredRegister.create(ForgeRegistries.ITEMS, CommonMod.MOD_ID);
 
     public static final RegistryObject<Item> BYPRODUCT_REMOVER =
         ITEMS.register("byproduct_remover",

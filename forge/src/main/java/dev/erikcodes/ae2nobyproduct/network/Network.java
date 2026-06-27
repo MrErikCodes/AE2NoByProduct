@@ -1,6 +1,6 @@
 package dev.erikcodes.ae2nobyproduct.network;
 
-import dev.erikcodes.ae2nobyproduct.AE2NoByProduct;
+import dev.erikcodes.ae2nobyproduct.CommonMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -11,7 +11,7 @@ public final class Network {
     private Network() {}
     public static void register() {
         CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(AE2NoByProduct.MOD_ID, "main"),
+            new ResourceLocation(CommonMod.MOD_ID, "main"),
             () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
         int id = 0;
         CHANNEL.registerMessage(id++, C2SSetByproductRemoval.class,

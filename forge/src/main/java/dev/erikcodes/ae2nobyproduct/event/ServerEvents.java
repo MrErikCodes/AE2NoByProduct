@@ -1,7 +1,7 @@
 package dev.erikcodes.ae2nobyproduct.event;
 
 import appeng.menu.me.items.PatternEncodingTermMenu;
-import dev.erikcodes.ae2nobyproduct.AE2NoByProduct;
+import dev.erikcodes.ae2nobyproduct.CommonMod;
 import dev.erikcodes.ae2nobyproduct.config.Config;
 import dev.erikcodes.ae2nobyproduct.core.ByproductService;
 import dev.erikcodes.ae2nobyproduct.network.Network;
@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
-@Mod.EventBusSubscriber(modid = AE2NoByProduct.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = CommonMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ServerEvents {
     private ServerEvents() {}
     @SubscribeEvent
