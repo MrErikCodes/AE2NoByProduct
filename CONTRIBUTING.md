@@ -37,10 +37,13 @@ This starts a Minecraft 1.20.1 Forge client with the mod loaded. You will need a
 src/main/java/dev/erikcodes/ae2nobyproduct/
   ├── AE2NoByProduct.java          # Mod entry point
   ├── config/                      # Server config (TOML, Forge)
-  ├── mixin/                       # All Mixin classes
-  │   ├── server/                  # Server-side: strips byproducts at encode time
-  │   │   └── PatternEncodingTermMenuMixin.java
-  │   └── client/                  # Client-side: injects the toolbar toggle button
+  ├── client/                      # Client widgets + cached state (toggle button, ClientByproductState)
+  ├── core/                        # EffectiveState, ByproductState (NBT), ByproductService
+  ├── event/                       # Server events (sync state on terminal open)
+  ├── mixin/                       # Mixin classes
+  │   ├── PatternEncodingTermMenuMixin.java       # Server-side: strips byproducts at encode time
+  │   └── client/                  # Client-side: toolbar toggle button
+  │       ├── AEBaseScreenInvoker.java             # @Invoker for AE2's addToLeftToolbar
   │       └── PatternEncodingTermScreenMixin.java
   └── network/                     # Packets for syncing player toggle state
 ```
@@ -50,7 +53,7 @@ src/main/java/dev/erikcodes/ae2nobyproduct/
 - The mod is **Mixin-based**. There are no custom blocks or items — everything is injected into AE2's existing classes.
 - **Server-side Mixin** (`PatternEncodingTermMenuMixin`): intercepts pattern encoding in `PatternEncodingTermMenu` and strips extra output slots if the player's toggle is ON. Stripping is server-authoritative and cannot be bypassed by clients.
 - **Client-side Mixin** (`PatternEncodingTermScreenMixin`): injects the toggle button into AE2's left-hand toolbar at the same position and style as native AE2 buttons.
-- **Player data**: the per-player toggle state is stored as an `IAttachmentHolder` (Forge data attachments) on the `ServerPlayer`, which persists across relog and server restart.
+- **Player data**: the per-player toggle state is stored in the player's persistent NBT (`Player.getPersistentData()` under the `PlayerPersisted` sub-tag), which survives relog, server restart, and death.
 
 ---
 

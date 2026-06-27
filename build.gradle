@@ -50,6 +50,9 @@ dependencies {
     // EMI — item/recipe browser for convenient in-dev testing. Dev-runtime only.
     // emi-1.1.22+1.20.1+forge, project 580555 / file 6420945.
     runtimeOnly fg.deobf("curse.maven:emi-580555:6420945")
+    // AE2 Wireless Terminals (ae2wtlib) — wireless + universal pattern terminals, for testing
+    // addon compatibility. Dev-runtime only. project 459929 / file 7251206 (ae2wtlib-15.3.3-forge).
+    runtimeOnly fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:7251206")
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
