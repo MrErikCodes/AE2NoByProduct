@@ -1,6 +1,6 @@
-package dev.nilsenkonsult.ae2nobyproduct.core;
+package dev.erikcodes.ae2nobyproduct.core;
 
-import dev.nilsenkonsult.ae2nobyproduct.config.Config;
+import dev.erikcodes.ae2nobyproduct.config.Config;
 import net.minecraft.world.entity.player.Player;
 
 public final class ByproductService {

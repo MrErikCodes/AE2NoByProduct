@@ -5,7 +5,7 @@ plugins {
 }
 
 version = project.mod_version
-group = 'dev.nilsenkonsult.ae2nobyproduct'
+group = 'dev.erikcodes.ae2nobyproduct'
 base { archivesName = project.mod_id }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)

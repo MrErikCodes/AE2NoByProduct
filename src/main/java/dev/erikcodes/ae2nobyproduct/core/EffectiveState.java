@@ -1,4 +1,4 @@
-package dev.nilsenkonsult.ae2nobyproduct.core;
+package dev.erikcodes.ae2nobyproduct.core;
 
 public final class EffectiveState {
     private EffectiveState() {}

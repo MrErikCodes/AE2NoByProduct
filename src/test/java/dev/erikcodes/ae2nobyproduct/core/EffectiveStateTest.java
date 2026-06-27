@@ -1,4 +1,4 @@
-package dev.nilsenkonsult.ae2nobyproduct.core;
+package dev.erikcodes.ae2nobyproduct.core;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

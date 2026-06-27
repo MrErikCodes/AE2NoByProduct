@@ -1,4 +1,4 @@
-package dev.nilsenkonsult.ae2nobyproduct.config;
+package dev.erikcodes.ae2nobyproduct.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

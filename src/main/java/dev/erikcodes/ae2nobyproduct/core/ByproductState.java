@@ -1,4 +1,4 @@
-package dev.nilsenkonsult.ae2nobyproduct.core;
+package dev.erikcodes.ae2nobyproduct.core;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
