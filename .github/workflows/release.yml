@@ -13,6 +13,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Fail fast (before building or publishing) if the release tag and the
+      # version in gradle.properties disagree. The published file and the
+      # release/CurseForge/Modrinth label must be the same version.
+      - name: Verify the release tag matches gradle.properties
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          TAG_VERSION="${TAG#v}"
+          MOD_VERSION="$(grep -E '^mod_version=' gradle.properties | cut -d= -f2 | tr -d '[:space:]')"
+          echo "Release tag:                  $TAG (version $TAG_VERSION)"
+          echo "gradle.properties mod_version: $MOD_VERSION"
+          if [ "$TAG_VERSION" != "$MOD_VERSION" ]; then
+            echo "::error::Release tag '$TAG' (version '$TAG_VERSION') does not match gradle.properties mod_version '$MOD_VERSION'. They must be identical. Bump mod_version (or fix the tag) and re-release."
+            exit 1
+          fi
+          echo "Version check passed: $MOD_VERSION"
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:

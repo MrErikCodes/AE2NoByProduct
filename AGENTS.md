@@ -48,7 +48,7 @@ See `RELEASE.md` for the full walkthrough. In short:
 
 ### Pre-release checklist
 - [ ] `./gradlew build` green, tests pass
-- [ ] `mod_version` bumped, tag will match
+- [ ] `mod_version` bumped to match the release tag (the release workflow fails if they differ)
 - [ ] `CHANGELOG.md` updated
 - [ ] `README.md` + `CURSEFORGE.md` aligned, no em-dashes
 - [ ] Supported-versions tables current (`README.md`, `CURSEFORGE.md`)

@@ -17,6 +17,7 @@ Publishing is automated. When you publish a GitHub Release, the [`release.yml`](
 
 ## Keeping the published metadata correct
 
+- **Version match is enforced.** Before building or publishing, the release workflow fails if the git tag does not match `gradle.properties` `mod_version` (ignoring a leading `v`). The published file and the release label are therefore always the same version.
 - **Game version** is read automatically from `gradle.properties` (`mc_version`), so it always matches what was built. No manual edit needed.
 - **Loaders** are set in `release.yml` (`loaders: forge`). If you add a loader (Fabric, NeoForge), update that line and the `files` glob, and re-verify the Mixin targets for the new AE2 version. See [AGENTS.md](AGENTS.md).
 
