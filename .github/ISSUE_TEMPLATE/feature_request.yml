@@ -1,0 +1,56 @@
+name: Feature Request
+description: Suggest an idea or improvement for AE2 No Byproduct
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please provide as much context as possible so we can evaluate and prioritize it.
+
+        **Before submitting:** search [existing issues](https://github.com/ErikCodes/AE2NoByProduct/issues) to see if this has already been requested.
+
+  - type: textarea
+    id: problem_motivation
+    attributes:
+      label: Problem / Motivation
+      description: What problem does this feature solve? What is the use case or pain point?
+      placeholder: |
+        When I use Wireless Pattern Terminals from [addon X], the strip toggle is missing from the toolbar even though the terminal otherwise behaves identically to the stock AE2 Pattern Encoding Terminal.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like. Be as specific as you can.
+      placeholder: |
+        Detect when a screen that extends AE2's PatternEncodingTermScreen is open and inject the strip toggle there too, not just on the base class.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative approaches or workarounds?
+      placeholder: |
+        I tried using the server config to force stripping for everyone, which works but removes player choice.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or links that might be helpful.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: existing_search
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have searched existing issues and feature requests and this is not a duplicate.
+          required: true

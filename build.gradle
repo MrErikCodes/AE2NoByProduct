@@ -5,7 +5,7 @@ plugins {
 }
 
 version = project.mod_version
-group = 'dev.nilsenkonsult.ae2nobyproduct'
+group = 'dev.erikcodes.ae2nobyproduct'
 base { archivesName = project.mod_id }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -34,6 +34,10 @@ mixin {
 
 repositories {
     maven { url 'https://cursemaven.com' }
+    maven { url 'https://maven.architectury.dev/' }
+    maven { url 'https://maven.shedaniel.me/' }
+    maven { url 'https://maven.theillusivec4.top/' }
+    maven { url 'https://maven.saps.dev/releases' }
     mavenCentral()
 }
 
@@ -42,12 +46,47 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     // AE2 — not on Maven Central; resolved via CurseMaven.
     // project applied-energistics-2 = 223794, file 7148487 = appliedenergistics2-forge-15.4.10.jar
-    compileOnly fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
+    // implementation (not compileOnly) so AE2 is present + loaded as a mod at dev runtime (runClient).
+    implementation fg.deobf("curse.maven:applied-energistics-2-223794:7148487")
+    // GuideME — AE2 15.4.x hard-depends on it ([20.1.7,20.2.0)). Dev-runtime only: our mod never
+    // references it and production packs already ship it. guideme-20.1.14, project 1173950 / file 7127447.
+    runtimeOnly fg.deobf("curse.maven:guideme-1173950:7127447")
+    // EMI — item/recipe browser for convenient in-dev testing. Dev-runtime only.
+    // emi-1.1.22+1.20.1+forge, project 580555 / file 6420945.
+    runtimeOnly fg.deobf("curse.maven:emi-580555:6420945")
+    // AE2 Wireless Terminals (ae2wtlib) — wireless + universal pattern terminals, for testing
+    // addon compatibility. Dev-runtime only. project 459929 / file 7251206 (ae2wtlib-15.3.3-forge).
+    runtimeOnly fg.deobf("curse.maven:applied-energistics-2-wireless-terminals-459929:7251206")
+
+    // --- Addon mods (dev-runtime only) for testing the Byproduct Remover against addon pattern
+    // providers. Resolved via CurseMaven so they are properly deobfuscated for the dev runtime. ---
+    runtimeOnly fg.deobf("curse.maven:mega-cells-622112:6175008")           // Mega Cells 2.4.6
+    runtimeOnly fg.deobf("curse.maven:ex-pattern-provider-892005:7986603")  // Extended AE 1.4.15
+    // Expanded AE disabled in dev: its mod class fails to construct under this dev's Forge 47.3.0
+    // ("NoSuchMethodException: lu.kolja.expandedae.Expandedae.<init>()"), which aborts the whole client.
+    // Not our bug; test Expanded AE in the full pack instead.
+    // runtimeOnly fg.deobf("curse.maven:expanded-ae-1213351:8048572")      // Expanded AE 1.4.1.b
+
+    // Library deps the addon mods pull in (dev-runtime only), via each lib's official maven.
+    runtimeOnly fg.deobf("dev.architectury:architectury-forge:9.2.14")
+    runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.136")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
+    runtimeOnly fg.deobf("curse.maven:glodium-957920:5226922")              // Glodium 1.5 (Extended AE)
+    // KubeJS (+ Rhino) — so KubeJS recipe scripting can be verified against our recipe.
+    runtimeOnly fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.5-build.26")
+    runtimeOnly fg.deobf("curse.maven:rhino-416294:6186971")                // Rhino 2001.2.3-build.10 (pack pairing)
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test { useJUnitPlatform() }
+
+// KubeJS declares a transitive rhino-forge version that isn't published to its maven; drop that
+// module from resolution so the explicit CurseMaven Rhino above (the version the pack uses)
+// supplies the rhino mod at runtime instead.
+configurations.all {
+    exclude group: 'dev.latvian.mods', module: 'rhino-forge'
+}
 
 tasks.named('processResources', ProcessResources).configure {
     var props = [version: project.mod_version, mc_version: project.mc_version]

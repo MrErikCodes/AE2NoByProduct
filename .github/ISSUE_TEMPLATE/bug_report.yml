@@ -1,0 +1,99 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in AE2 No Byproduct
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill in as much detail as possible — incomplete reports are difficult to act on.
+
+        **Before submitting:** search [existing issues](https://github.com/ErikCodes/AE2NoByProduct/issues) to see if this has already been reported.
+
+  - type: dropdown
+    id: mc_version
+    attributes:
+      label: Minecraft Version
+      description: Which version of Minecraft are you running?
+      options:
+        - "1.20.1"
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: input
+    id: mod_loader
+    attributes:
+      label: Mod Loader
+      description: "Which mod loader are you using? (e.g. Forge 47.3.0)"
+      placeholder: "Forge 47.x.x"
+    validations:
+      required: true
+
+  - type: input
+    id: ae2_version
+    attributes:
+      label: Applied Energistics 2 Version
+      description: "Which version of AE2 are you running? (e.g. 15.4.2)"
+      placeholder: "15.4.x"
+    validations:
+      required: true
+
+  - type: input
+    id: mod_version
+    attributes:
+      label: AE2 No Byproduct Version
+      description: "Which version of AE2 No Byproduct are you using? Check the jar filename or the Mods screen."
+      placeholder: "e.g. 1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly. What did you observe? What did you expect?
+      placeholder: |
+        I opened the Pattern Encoding Terminal and clicked the strip toggle to ON. After encoding a processing pattern, the byproducts were still included in the output.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the bug reliably.
+      placeholder: |
+        1. Open the Pattern Encoding Terminal
+        2. Click the strip-byproducts toggle until it shows a green check (ON)
+        3. Encode a processing pattern with multiple outputs
+        4. Inspect the encoded pattern — byproducts are still present
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: What should have happened instead?
+      placeholder: Only the first output should be kept; byproducts should be discarded.
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Crash Report
+      description: |
+        Paste relevant log output or a crash report here. For long logs, please use a paste service such as [mclo.gs](https://mclo.gs) or [Pastebin](https://pastebin.com) and link it.
+      render: text
+      placeholder: "Paste log snippet or link to paste service..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: existing_search
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true

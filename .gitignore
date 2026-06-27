@@ -9,3 +9,9 @@ run-server/
 
 # OMC operational state (not project artifacts)
 .omc/
+
+# Design docs / specs / plans (kept local, not committed)
+docs/
+
+# Superpowers SDD scratch (ledger, task briefs, reports)
+.superpowers/

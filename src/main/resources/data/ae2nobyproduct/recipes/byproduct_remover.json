@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "ae2:cell_component_16k" },
+    { "item": "ae2:blank_pattern" },
+    { "item": "ae2:crafting_unit" }
+  ],
+  "result": {
+    "item": "ae2nobyproduct:byproduct_remover"
+  }
+}

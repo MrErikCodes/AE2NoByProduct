@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Questions & Support (GitHub Discussions)
+    url: https://github.com/MrErikCodes/AE2NoByProduct/discussions
+    about: >
+      For general questions, usage help, or modpack advice, please use GitHub
+      Discussions instead of opening an issue. Issues are reserved for confirmed
+      bugs and feature requests.

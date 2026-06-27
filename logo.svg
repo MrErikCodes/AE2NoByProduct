@@ -1,0 +1,26 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AE2 No Byproduct logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c212b"/>
+      <stop offset="1" stop-color="#0d1014"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3b455"/>
+      <stop offset="1" stop-color="#e29a2c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- panel -->
+  <rect x="6" y="6" width="500" height="500" rx="104" fill="url(#bg)" stroke="#29b6a8" stroke-width="6"/>
+
+  <!-- kept output (gold) — left of centre -->
+  <rect x="136" y="150" width="104" height="104" rx="16" fill="url(#amber)" stroke="#f6cd82" stroke-width="6"/>
+
+  <!-- byproduct output (removed) — right of centre -->
+  <rect x="272" y="150" width="104" height="104" rx="16" fill="#434d5c" stroke="#59647a" stroke-width="6"/>
+  <circle cx="324" cy="202" r="62" fill="none" stroke="#ec4b40" stroke-width="14"/>
+  <path d="M280 158 L368 246" stroke="#ec4b40" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- wordmark -->
+  <text x="256" y="372" text-anchor="middle" font-family="Verdana, Geneva, sans-serif" font-size="48" font-weight="700" fill="#eef2f7">AE2 No Byproduct</text>
+</svg>
