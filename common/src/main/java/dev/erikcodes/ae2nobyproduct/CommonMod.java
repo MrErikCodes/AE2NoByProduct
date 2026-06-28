@@ -1,6 +1,9 @@
 package dev.erikcodes.ae2nobyproduct;
 
 import com.mojang.logging.LogUtils;
+import dev.architectury.utils.Env;
+import dev.architectury.utils.EnvExecutor;
+import dev.erikcodes.ae2nobyproduct.network.ModNetworking;
 import org.slf4j.Logger;
 
 /**
@@ -15,5 +18,10 @@ public final class CommonMod {
 
     public static void init() {
         LOGGER.info("AE2 No Byproduct (common) initializing");
+        // Networking is loader-agnostic (Architectury NetworkManager). The C2S receiver is safe on
+        // both sides; the S2C receiver is client-only (it maps to ClientPlayNetworking on Fabric, which
+        // is absent on a dedicated server), so it is registered behind an Env.CLIENT guard.
+        ModNetworking.init();
+        EnvExecutor.runInEnv(Env.CLIENT, () -> ModNetworking::initClient);
     }
 }

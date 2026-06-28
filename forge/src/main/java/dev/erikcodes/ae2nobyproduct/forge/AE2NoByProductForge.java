@@ -4,7 +4,6 @@ import dev.architectury.platform.forge.EventBuses;
 import dev.erikcodes.ae2nobyproduct.CommonMod;
 import dev.erikcodes.ae2nobyproduct.config.Config;
 import dev.erikcodes.ae2nobyproduct.core.ByproductConfig;
-import dev.erikcodes.ae2nobyproduct.network.Network;
 import dev.erikcodes.ae2nobyproduct.registry.ModItems;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -23,7 +22,6 @@ public class AE2NoByProductForge {
         ByproductConfig.install(new ForgeByproductConfig());
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
-        Network.register();
         ModItems.register(modEventBus);
 
         CommonMod.init();

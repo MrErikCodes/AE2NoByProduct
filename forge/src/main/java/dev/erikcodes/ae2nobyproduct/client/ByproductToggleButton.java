@@ -2,8 +2,7 @@ package dev.erikcodes.ae2nobyproduct.client;
 
 import appeng.client.gui.Icon;
 import appeng.client.gui.widgets.IconButton;
-import dev.erikcodes.ae2nobyproduct.network.C2SSetByproductRemoval;
-import dev.erikcodes.ae2nobyproduct.network.Network;
+import dev.erikcodes.ae2nobyproduct.network.ModNetworking;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
@@ -40,7 +39,7 @@ public class ByproductToggleButton extends IconButton {
         boolean nv = !ClientByproductState.effectiveState;
         ClientByproductState.effectiveState = nv;
         lastKnownState = nv;
-        Network.CHANNEL.sendToServer(new C2SSetByproductRemoval(nv));
+        ModNetworking.sendSetToggle(nv);
         refreshTooltip();
     }
 
