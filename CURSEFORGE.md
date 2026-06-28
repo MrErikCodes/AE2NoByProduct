@@ -61,6 +61,8 @@ The button disappears and every player's processing patterns are stripped automa
 
 ## 📦 Requirements
 
+> **Server and client mod.** Install AE2 No Byproduct on **both** the server and the client. On a dedicated or LAN server it must be present on the server *and* on every client that connects: the toggle button and Byproduct Remover live on the client, while stripping is enforced on the server. In single player, one copy in your `mods/` folder covers both.
+
 | | |
 |---|---|
 | **Minecraft** | 1.20.1 |

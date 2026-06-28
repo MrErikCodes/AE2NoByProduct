@@ -40,6 +40,8 @@ Already have patterns encoded with byproducts? The mod also includes a **Byprodu
 
 ## Requirements & Supported Versions
 
+> **Server and client mod.** AE2 No Byproduct must be installed on **both** the server and the client. On a dedicated or LAN server, install it on the server *and* on every client that connects: the toggle button and the Byproduct Remover live on the client, while stripping is enforced on the server. In single player, one copy in your `mods/` folder covers both sides.
+
 **Available now**
 
 | Component | Version |
@@ -64,7 +66,7 @@ Multi-loader and multi-version support is on the roadmap and will be built from 
 ## Installation
 
 1. Download the latest release jar from the [Releases](https://github.com/MrErikCodes/AE2NoByProduct/releases) page.
-2. Drop the jar into your `mods/` folder alongside Applied Energistics 2.
+2. Drop the jar into your `mods/` folder alongside Applied Energistics 2. In multiplayer, do this on the **server and on every client** (it is a server and client mod).
 3. Launch Minecraft. No extra setup required.
 
 That's it. The toggle button will appear in the Pattern Encoding Terminal as soon as the mod is loaded.
