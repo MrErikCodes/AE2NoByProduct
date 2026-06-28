@@ -96,18 +96,36 @@ jobs:
           game-versions: ${{ steps.props.outputs.mc }}
           java: "17"
 
-      - name: Publish to CurseForge
+      # CurseForge has no multi-loader "version" like Modrinth: each file is independent and carries
+      # its own loader tag. A single mc-publish call with both jars groups them under one file with
+      # one loader (it mis-tagged the Fabric jar as Forge). So upload each loader's jar in its OWN
+      # step with an explicit single loader, producing two correctly-tagged CurseForge files.
+      - name: Publish Forge to CurseForge
         if: ${{ !cancelled() && !contains(github.event.release.body, '[skip-stores]') }}
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: 1590300
           curseforge-token: ${{ secrets.CF_API_TOKEN }}
-          files: |
-            forge/build/libs/!(*-sources|*-dev*).jar
-            fabric/build/libs/!(*-sources|*-dev*).jar
-          name: ${{ github.event.release.name }}
+          files: forge/build/libs/!(*-sources|*-dev*).jar
+          name: ${{ github.event.release.name }} (Forge)
           version: ${{ github.event.release.tag_name }}
           version-type: release
           changelog: ${{ github.event.release.body }}
+          loaders: forge
+          game-versions: ${{ steps.props.outputs.mc }}
+          java: "17"
+
+      - name: Publish Fabric to CurseForge
+        if: ${{ !cancelled() && !contains(github.event.release.body, '[skip-stores]') }}
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          curseforge-id: 1590300
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+          files: fabric/build/libs/!(*-sources|*-dev*).jar
+          name: ${{ github.event.release.name }} (Fabric)
+          version: ${{ github.event.release.tag_name }}
+          version-type: release
+          changelog: ${{ github.event.release.body }}
+          loaders: fabric
           game-versions: ${{ steps.props.outputs.mc }}
           java: "17"
