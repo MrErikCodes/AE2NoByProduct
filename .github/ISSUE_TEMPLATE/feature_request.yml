@@ -7,7 +7,7 @@ body:
       value: |
         Thanks for suggesting a feature! Please provide as much context as possible so we can evaluate and prioritize it.
 
-        **Before submitting:** search [existing issues](https://github.com/MrErikCodes/AE2NoByProduct/issues) to see if this has already been requested.
+        **Before submitting:** search [existing issues](https://github.com/AE2NoByproduct/AE2NoByproduct/issues) to see if this has already been requested.
 
   - type: textarea
     id: problem_motivation

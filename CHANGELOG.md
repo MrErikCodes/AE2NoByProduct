@@ -24,6 +24,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Byproduct Remover item: shift + right-click a Pattern Provider to strip byproducts from every processing pattern stored inside it. Works on base AE2 providers and add-on providers (tested with Extended AE and MEGA Cells).
 - Crafting recipe for the Byproduct Remover: 16k Storage Component + Blank Pattern + Crafting Unit (shapeless).
 
-[Unreleased]: https://github.com/MrErikCodes/AE2NoByProduct/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/MrErikCodes/AE2NoByProduct/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/MrErikCodes/AE2NoByProduct/releases/tag/v0.1.0
+[Unreleased]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/releases/tag/v0.1.0

@@ -14,8 +14,8 @@ Thank you for your interest in contributing! This document covers everything you
 **Clone and build**
 
 ```bash
-git clone https://github.com/MrErikCodes/AE2NoByProduct.git
-cd AE2NoByProduct
+git clone https://github.com/AE2NoByproduct/AE2NoByproduct.git
+cd AE2NoByproduct
 ./gradlew build
 ```
 
@@ -120,4 +120,4 @@ Use the [Bug Report](.github/ISSUE_TEMPLATE/bug_report.yml) issue template. Incl
 
 ## Questions?
 
-For general questions that don't belong in an issue, use [GitHub Discussions](https://github.com/MrErikCodes/AE2NoByProduct/discussions).
+For general questions that don't belong in an issue, use [GitHub Discussions](https://github.com/AE2NoByproduct/AE2NoByproduct/discussions).

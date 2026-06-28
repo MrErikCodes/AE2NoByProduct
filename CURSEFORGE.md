@@ -79,6 +79,6 @@ Pick the jar that matches your loader: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` f
 
 ## 📖 Open Source
 
-AE2 No Byproduct is **open source under the MIT License**: use it, fork it, bundle it in your modpack freely; just keep the credit. Source, issues, and contributions welcome on [GitHub](https://github.com/MrErikCodes/AE2NoByProduct).
+AE2 No Byproduct is **open source under the MIT License**: use it, fork it, bundle it in your modpack freely; just keep the credit. Source, issues, and contributions welcome on [GitHub](https://github.com/AE2NoByproduct/AE2NoByproduct).
 
 *Not affiliated with or endorsed by the Applied Energistics team. AE2 and its assets belong to their respective owners.*

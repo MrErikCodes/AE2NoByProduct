@@ -63,7 +63,7 @@ Multi-version support is on the roadmap and is built from the same single codeba
 
 ## Installation
 
-1. Download the jar **for your loader** from the [Releases](https://github.com/MrErikCodes/AE2NoByProduct/releases) page, [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), or [Modrinth](https://modrinth.com/mod/ae2-no-byproduct). The jar name tells you which: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` for Forge, `ae2nobyproduct-fabric-1.20.1-x.y.z.jar` for Fabric.
+1. Download the jar **for your loader** from the [Releases](https://github.com/AE2NoByproduct/AE2NoByproduct/releases) page, [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), or [Modrinth](https://modrinth.com/mod/ae2-no-byproduct). The jar name tells you which: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` for Forge, `ae2nobyproduct-fabric-1.20.1-x.y.z.jar` for Fabric.
 2. Drop the jar into your `mods/` folder alongside Applied Energistics 2. In multiplayer, do this on the **server and on every client** (it is a server and client mod).
 3. Launch Minecraft. No extra setup required.
 
@@ -128,8 +128,8 @@ No button will appear in the terminal; all processing patterns will silently str
 Java 17 is required. The Gradle wrapper provisions a JDK 17 toolchain automatically if one is not found locally.
 
 ```bash
-git clone https://github.com/MrErikCodes/AE2NoByProduct.git
-cd AE2NoByProduct
+git clone https://github.com/AE2NoByproduct/AE2NoByproduct.git
+cd AE2NoByproduct
 ./gradlew build
 ```
 
@@ -152,7 +152,7 @@ Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before
 
 **Found a bug?** Open an issue using the [Bug Report](.github/ISSUE_TEMPLATE/bug_report.yml) template. Include your Minecraft version, mod loader version, AE2 version, AE2 No Byproduct version, logs, and clear reproduction steps.
 
-**Have a question?** Use [GitHub Discussions](https://github.com/MrErikCodes/AE2NoByProduct/discussions) rather than an issue.
+**Have a question?** Use [GitHub Discussions](https://github.com/AE2NoByproduct/AE2NoByproduct/discussions) rather than an issue.
 
 ---
 

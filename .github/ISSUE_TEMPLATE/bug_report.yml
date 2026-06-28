@@ -7,7 +7,7 @@ body:
       value: |
         Thanks for taking the time to report a bug! Please fill in as much detail as possible. Incomplete reports are difficult to act on.
 
-        **Before submitting:** search [existing issues](https://github.com/MrErikCodes/AE2NoByProduct/issues) to see if this has already been reported.
+        **Before submitting:** search [existing issues](https://github.com/AE2NoByproduct/AE2NoByproduct/issues) to see if this has already been reported.
 
   - type: dropdown
     id: mc_version

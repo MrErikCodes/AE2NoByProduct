@@ -27,4 +27,4 @@ If that version is already on CurseForge and Modrinth (or you only want it attac
 
 ## After publishing
 
-Verify the file appears on the [Releases page](https://github.com/MrErikCodes/AE2NoByProduct/releases), on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), and on [Modrinth](https://modrinth.com/mod/ae2-no-byproduct).
+Verify the file appears on the [Releases page](https://github.com/AE2NoByproduct/AE2NoByproduct/releases), on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), and on [Modrinth](https://modrinth.com/mod/ae2-no-byproduct).
