@@ -26,6 +26,12 @@ dependencies {
     modImplementation "appeng:appliedenergistics2-fabric:${rootProject.ae2_version}"
     // GuideME is a hard runtime dependency of AE2 15.4.x.
     modRuntimeOnly "org.appliedenergistics:guideme:${rootProject.guideme_version}"
+    // Team Reborn Energy API: AE2-fabric ships it as a nested jar (META-INF/jars/energy-3.0.0.jar),
+    // which a real install loads automatically, but loom does not surface a dependency's nested jars
+    // on the dev classpath — so AE2 crashes at startup with NoClassDefFoundError for
+    // team.reborn.energy.api.EnergyStorage. Provide it for the dev runtime only (not shipped in our
+    // jar). Version matches AE2 15.4.10's bundled energy jar; resolved from loom's Fabric maven.
+    modRuntimeOnly "teamreborn:energy:3.0.0"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
