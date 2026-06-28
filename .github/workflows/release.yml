@@ -84,10 +84,11 @@ jobs:
           version-type: release
           changelog: ${{ github.event.release.body }}
 
-          # What these jars actually support. Update when loaders / versions change.
-          loaders: |
-            forge
-            fabric
+          # Loaders come from each jar's own metadata (fabric.mod.json -> fabric,
+          # mods.toml -> forge), so every file is tagged with ONLY its own loader. Do NOT
+          # set `loaders` here: forcing forge+fabric onto both jars mis-tags them on
+          # CurseForge and makes Modrinth reject the forge jar as a Fabric file. game-versions
+          # stays pinned because both loaders target the same Minecraft version.
           game-versions: ${{ steps.props.outputs.mc }}
           java: "17"
 
@@ -106,8 +107,6 @@ jobs:
           version-type: release
           changelog: ${{ github.event.release.body }}
 
-          loaders: |
-            forge
-            fabric
+          # Loaders auto-detected per jar (see the comment on the step above).
           game-versions: ${{ steps.props.outputs.mc }}
           java: "17"
