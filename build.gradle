@@ -34,6 +34,8 @@ allprojects {
     group = rootProject.maven_group
 
     repositories {
+        // Standard deps (e.g. the JUnit test artifacts in :common); Loom does not add Maven Central.
+        mavenCentral()
         // Applied Energistics 2 + GuideME are published here for addon developers.
         maven {
             name = "Modmaven"

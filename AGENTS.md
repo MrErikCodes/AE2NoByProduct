@@ -56,11 +56,11 @@ See `RELEASE.md` for the full walkthrough. In short:
 
 ## When the build or targets change
 
-- If you add a loader or MC version (Architectury/Stonecutter work), **update `.github/workflows/release.yml`**: the build command, the published `files` glob (multiple jars), and `loaders`. The `game-versions` value is read from `gradle.properties` automatically, so update `mc_version` there. Also update the supported-versions tables in `README.md` and `CURSEFORGE.md`.
+- If you add a loader or MC version (Architectury/Stonecutter work), **update `.github/workflows/release.yml`**: the build command, the published `files` glob (multiple jars), and `loaders`. The `game-versions` value is read from `gradle.properties` automatically, so update `minecraft_version` there. Also update the supported-versions tables in `README.md` and `CURSEFORGE.md`.
 - Each new MC/AE2 target needs the Mixin targets re-verified against that AE2 version (see `CONTRIBUTING.md`).
 
 ## Secrets the release needs (already configured)
 
 - `CF_API_TOKEN` (secret): CurseForge API token. Configured.
 - `MODRINTH_TOKEN` (secret): Modrinth token. Configured.
-- The CurseForge project id (`1590300`) and Modrinth slug (`ae2-no-byproduct`) are set directly in `release.yml`; the published game version is read from `gradle.properties` (`mc_version`). Change them in `release.yml` only if the project itself changes.
+- The CurseForge project id (`1590300`) and Modrinth slug (`ae2-no-byproduct`) are set directly in `release.yml`; the published game version is read from `gradle.properties` (`minecraft_version`). Change them in `release.yml` only if the project itself changes.

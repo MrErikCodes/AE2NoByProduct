@@ -39,8 +39,16 @@ public abstract class PatternEncodingTermMenuMixin {
     )
     private ItemStack ae2nobyproduct$stripByproducts(GenericStack[] inputs, GenericStack[] outputs) {
         Player player = ((AEBaseMenu) (Object) this).getPlayer();
-        if (player != null && ByproductService.shouldStrip(player) && outputs.length > 0 && outputs[0] != null) {
-            outputs = new GenericStack[] { outputs[0] };
+        if (player != null && ByproductService.shouldStrip(player)) {
+            // Outputs are sparse: slots can be null, and the primary output is not necessarily slot 0.
+            // Keep the first non-null one, matching ByproductRemoverItem's cleanup so live encoding and
+            // the tool agree on which output survives.
+            for (GenericStack output : outputs) {
+                if (output != null) {
+                    outputs = new GenericStack[] { output };
+                    break;
+                }
+            }
         }
         return PatternDetailsHelper.encodeProcessingPattern(inputs, outputs);
     }

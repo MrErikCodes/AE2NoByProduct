@@ -6,7 +6,7 @@ Publishing is automated. When you publish a GitHub Release, the [`release.yml`](
 
 1. Make sure `main` builds: `./gradlew build` (tests pass).
 2. Confirm `README.md` and `CURSEFORGE.md` are aligned and contain no em-dashes.
-3. Bump `mod_version` in `gradle.properties` (semver). The git tag will be `v<mod_version>`, and the published game version is read from `mc_version` in the same file.
+3. Bump `mod_version` in `gradle.properties` (semver). The git tag will be `v<mod_version>`, and the published game version is read from `minecraft_version` in the same file.
 4. Update `CHANGELOG.md`: move the `[Unreleased]` items into a new `## [x.y.z] - YYYY-MM-DD` section, refresh the compare links, and leave a fresh empty `[Unreleased]`.
 5. Commit and push to `main`.
 6. On GitHub, go to **Releases → Draft a new release**:
@@ -22,7 +22,7 @@ If that version is already on CurseForge and Modrinth (or you only want it attac
 ## Keeping the published metadata correct
 
 - **Version match is enforced.** Before building or publishing, the release workflow fails if the git tag does not match `gradle.properties` `mod_version` (ignoring a leading `v`). The published file and the release label are therefore always the same version.
-- **Game version** is read automatically from `gradle.properties` (`mc_version`), so it always matches what was built. No manual edit needed.
+- **Game version** is read automatically from `gradle.properties` (`minecraft_version`), so it always matches what was built. No manual edit needed.
 - **Loaders** are set in `release.yml` (`loaders: forge` + `fabric`), with one `files` glob per loader module (`forge/build/libs/...`, `fabric/build/libs/...`). The jars carry the loader and MC version in their filename (`ae2nobyproduct-<loader>-<mcversion>-<modversion>.jar`). If you add a loader (NeoForge), add it to the `loaders` list and its glob, and re-verify the Mixin targets for the new AE2 version. See [AGENTS.md](AGENTS.md).
 
 ## After publishing

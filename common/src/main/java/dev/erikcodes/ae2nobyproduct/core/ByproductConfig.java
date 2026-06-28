@@ -9,17 +9,18 @@ import net.minecraft.world.entity.player.Player;
  * {@code common} and is shared by Forge and Fabric. The actual source of these values is
  * loader-specific, so each platform installs a {@link Provider}:
  * <ul>
- *   <li><b>Forge</b> installs a provider backed by its {@code ForgeConfigSpec} config and its
- *       per-player persisted-NBT toggle store.</li>
- *   <li><b>Fabric</b> (this milestone) uses {@link #DEFAULT}: feature on, no per-player toggle,
- *       strip by default, so the shared mixin actually strips byproducts on Fabric without a
- *       config/UI/networking port.</li>
+ *   <li><b>Forge</b> installs {@code ForgeByproductConfig}, backed by its {@code ForgeConfigSpec}
+ *       config and a per-player persisted-NBT toggle store.</li>
+ *   <li><b>Fabric</b> installs {@code FabricByproductConfig}, backed by a JSON config and a
+ *       per-player toggle stored via the persistence mixins.</li>
  * </ul>
+ * Until a platform installs its provider, {@link #DEFAULT} is used (feature on, no per-player
+ * toggle, strip by default).
  *
  * <p>Per-player toggle access ({@link Provider#savedState}/{@link Provider#setSavedState}) is part
- * of this interface because the Forge implementation relies on {@code Player.getPersistentData()},
- * which does not exist in vanilla/Fabric, so keeping it behind the provider lets the persistence
- * implementation stay on the Forge side.
+ * of this interface because the persistence mechanism is loader-specific: Forge uses
+ * {@code Player.getPersistentData()}, which has no vanilla/Fabric equivalent, so each platform
+ * supplies its own.
  */
 public final class ByproductConfig {
 
@@ -36,7 +37,7 @@ public final class ByproductConfig {
         void setSavedState(Player player, boolean value);
     }
 
-    /** Default used by loaders that have not wired a config yet (Fabric, this milestone). */
+    /** Fallback used until a platform installs its own {@link Provider} during init. */
     public static final Provider DEFAULT = new Provider() {
         @Override public boolean enableFeature() { return true; }
         @Override public boolean allowPlayerToggle() { return false; }

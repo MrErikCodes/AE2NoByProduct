@@ -39,9 +39,13 @@ public final class ModNetworking {
             ctx.queue(() -> {
                 if (!(ctx.getPlayer() instanceof ServerPlayer player)) return;
                 ByproductConfig.Provider cfg = ByproductConfig.get();
-                // Honour the server config: ignore the toggle if the feature is off or toggling is disallowed.
-                if (!cfg.enableFeature() || !cfg.allowPlayerToggle()) return;
-                cfg.setSavedState(player, enabled);
+                // Honour the server config: only apply the toggle when the feature is on and toggling is
+                // allowed. Either way, echo the authoritative state back so the client's optimistic button
+                // update is corrected when the server rejects (or otherwise changes) it.
+                if (cfg.enableFeature() && cfg.allowPlayerToggle()) {
+                    cfg.setSavedState(player, enabled);
+                }
+                sendSyncState(player);
             });
         });
     }

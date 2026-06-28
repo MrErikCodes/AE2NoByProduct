@@ -55,10 +55,15 @@ public final class FabricConfig {
                     cfg.showMessages = bool(o, "showMessages", cfg.showMessages);
                 }
             } catch (IOException | RuntimeException e) {
-                CommonMod.LOGGER.warn("Could not read {}.json; using defaults", CommonMod.MOD_ID, e);
+                // Leave the user's broken-but-recoverable file untouched so they can fix it; run with
+                // defaults this session rather than clobbering it with default values.
+                CommonMod.LOGGER.warn("Could not read {}.json; using defaults this run, file left as-is", CommonMod.MOD_ID, e);
+                return cfg;
             }
+            cfg.save(); // parsed OK: rewrite to backfill any keys missing from an older file
+        } else {
+            cfg.save(); // no file yet: materialise one with the defaults
         }
-        cfg.save(); // materialise the file / backfill any missing keys
         return cfg;
     }
 
