@@ -1,0 +1,23 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+dependencies {
+    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
+    // Do NOT use other classes from fabric loader
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    // Architectury API
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+
+    // Applied Energistics 2 — compiled against in common (the shared mixin + core target AE2's
+    // appeng.* classes, whose names are identical on both loaders). compileOnly: common itself is
+    // never run; each platform module supplies the matching full AE2 jar at runtime.
+    modCompileOnly "appeng:appliedenergistics2-forge:${rootProject.ae2_version}"
+
+    testImplementation platform("org.junit:junit-bom:5.10.2")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+test {
+    useJUnitPlatform()
+}

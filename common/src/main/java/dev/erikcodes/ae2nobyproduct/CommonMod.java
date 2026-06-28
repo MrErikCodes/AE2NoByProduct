@@ -1,0 +1,30 @@
+package dev.erikcodes.ae2nobyproduct;
+
+import com.mojang.logging.LogUtils;
+import dev.architectury.utils.Env;
+import dev.architectury.utils.EnvExecutor;
+import dev.erikcodes.ae2nobyproduct.network.ModNetworking;
+import dev.erikcodes.ae2nobyproduct.registry.ModItems;
+import org.slf4j.Logger;
+
+/**
+ * Loader-agnostic entry point. Invoked by each platform's mod initializer
+ * ({@code AE2NoByProductForge} on Forge, {@code AE2NoByProductFabric} on Fabric).
+ */
+public final class CommonMod {
+    public static final String MOD_ID = "ae2nobyproduct";
+    public static final Logger LOGGER = LogUtils.getLogger();
+
+    private CommonMod() {}
+
+    public static void init() {
+        LOGGER.info("AE2 No Byproduct (common) initializing");
+        // Items + creative-tab entry, registered loader-agnostically via Architectury.
+        ModItems.init();
+        // Networking is loader-agnostic (Architectury NetworkManager). The C2S receiver is safe on
+        // both sides; the S2C receiver is client-only (it maps to ClientPlayNetworking on Fabric, which
+        // is absent on a dedicated server), so it is registered behind an Env.CLIENT guard.
+        ModNetworking.init();
+        EnvExecutor.runInEnv(Env.CLIENT, () -> ModNetworking::initClient);
+    }
+}

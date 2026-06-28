@@ -1,0 +1,77 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+// Loader + MC version in the jar name so the per-loader/per-version jars never collide
+// (e.g. ae2nobyproduct-fabric-1.20.1-0.2.0.jar). gradle appends -<mod_version> automatically.
+base {
+    archivesName = "${rootProject.archives_base_name}-fabric-${rootProject.minecraft_version}"
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+    // Architectury API
+    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+
+    // Applied Energistics 2 (Fabric) — full mod, so the shared byproduct-stripping mixin
+    // (bundled from :common) has its appeng.* targets present at dev runtime.
+    modImplementation "appeng:appliedenergistics2-fabric:${rootProject.ae2_version}"
+    // GuideME is a hard runtime dependency of AE2 15.4.x.
+    modRuntimeOnly "org.appliedenergistics:guideme:${rootProject.guideme_version}"
+    // Team Reborn Energy API: AE2-fabric ships it as a nested jar (META-INF/jars/energy-3.0.0.jar),
+    // which a real install loads automatically, but loom does not surface a dependency's nested jars
+    // on the dev classpath — so AE2 crashes at startup with NoClassDefFoundError for
+    // team.reborn.energy.api.EnergyStorage. Provide it for the dev runtime only (not shipped in our
+    // jar). Version matches AE2 15.4.10's bundled energy jar; resolved from loom's Fabric maven.
+    modRuntimeOnly "teamreborn:energy:3.0.0"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    injectAccessWidener = true
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+}
+
+sourcesJar {
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}

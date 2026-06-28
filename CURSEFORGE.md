@@ -32,7 +32,7 @@ A server config lets pack authors decide exactly how it behaves, including **for
 
 ## 🛠️ Configuration
 
-The server config is created at `<world>/serverconfig/ae2nobyproduct-server.toml`.
+The config is created on first launch in your `config/` folder like other mods: `config/ae2nobyproduct.toml` on **Forge**, `config/ae2nobyproduct.json` on **Fabric**. The options are identical on both loaders. On a multiplayer server, the server's config is the one that applies.
 
 | Option | Default | What it does |
 |--------|---------|--------------|
@@ -66,12 +66,14 @@ The button disappears and every player's processing patterns are stripped automa
 | | |
 |---|---|
 | **Minecraft** | 1.20.1 |
-| **Loader** | Forge 47.x |
+| **Loader** | Forge 47.x, or Fabric (Loader 0.16+ with Fabric API) |
 | **Required** | [Applied Energistics 2](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2) 15.4.x |
 
 *(AE2 already depends on GuideME, so if you have AE2, you're set.)*
 
-**On the roadmap:** Fabric (1.20.1) and NeoForge + Fabric (1.21.1), built from a single codebase.
+Pick the jar that matches your loader: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` for Forge, `ae2nobyproduct-fabric-1.20.1-x.y.z.jar` for Fabric.
+
+**On the roadmap:** 1.21.1 (NeoForge), built from the same single codebase. 1.21.1 will be NeoForge only, because Applied Energistics 2 has no Fabric build for 1.21.1.
 
 ---
 

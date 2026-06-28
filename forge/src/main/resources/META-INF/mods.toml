@@ -1,0 +1,46 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "ae2nobyproduct"
+version = "${version}"
+displayName = "AE2 No Byproduct"
+authors = "ErikCodes"
+description = '''
+Strips byproducts from AE2 processing patterns at encode time.
+'''
+
+# Shared server-side stripping mixin (bundled from :common) + Forge-only client toolbar button mixin.
+[[mixins]]
+config = "ae2nobyproduct.mixins.json"
+[[mixins]]
+config = "ae2nobyproduct.client.mixins.json"
+
+[[dependencies.ae2nobyproduct]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ae2nobyproduct]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.20.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ae2nobyproduct]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.ae2nobyproduct]]
+modId = "ae2"
+mandatory = true
+versionRange = "[15,)"
+ordering = "AFTER"
+side = "BOTH"

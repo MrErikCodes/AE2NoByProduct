@@ -47,7 +47,7 @@ Already have patterns encoded with byproducts? The mod also includes a **Byprodu
 | Component | Version |
 |-----------|---------|
 | Minecraft | 1.20.1 |
-| Mod loader | Forge 47.x |
+| Mod loader | Forge 47.x, or Fabric (Fabric Loader 0.16+ with Fabric API) |
 | Applied Energistics 2 | 15.4.x |
 | Java | 17 (toolchain auto-provisioned by Gradle) |
 
@@ -55,17 +55,15 @@ Already have patterns encoded with byproducts? The mod also includes a **Byprodu
 
 **Planned (not yet released)**
 
-- 1.20.1 Fabric
-- 1.21.1 NeoForge
-- 1.21.1 Fabric
+- 1.21.1 (NeoForge)
 
-Multi-loader and multi-version support is on the roadmap and will be built from a single codebase using Architectury + Stonecutter. Watch the repository for releases.
+Multi-version support is on the roadmap and is built from the same single codebase using Architectury + Stonecutter. Note that 1.21.1 will be NeoForge only, because Applied Energistics 2 has no Fabric build for 1.21.1. Watch the repository for releases.
 
 ---
 
 ## Installation
 
-1. Download the latest release jar from the [Releases](https://github.com/MrErikCodes/AE2NoByProduct/releases) page.
+1. Download the jar **for your loader** from the [Releases](https://github.com/MrErikCodes/AE2NoByProduct/releases) page, [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), or [Modrinth](https://modrinth.com/mod/ae2-no-byproduct). The jar name tells you which: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` for Forge, `ae2nobyproduct-fabric-1.20.1-x.y.z.jar` for Fabric.
 2. Drop the jar into your `mods/` folder alongside Applied Energistics 2. In multiplayer, do this on the **server and on every client** (it is a server and client mod).
 3. Launch Minecraft. No extra setup required.
 
@@ -95,7 +93,7 @@ For patterns that were *already* encoded with byproducts, craft the **Byproduct 
 
 ## Configuration
 
-The server config is written to `<world>/serverconfig/ae2nobyproduct-server.toml` (Forge per-world server config). It is created automatically on first launch with defaults.
+The config is created automatically on first launch with defaults, in your `config/` folder like other mods: `config/ae2nobyproduct.toml` on **Forge**, `config/ae2nobyproduct.json` on **Fabric**. The options are identical on both loaders. The mod is server-authoritative: on a multiplayer server, the server's config is what applies.
 
 | Option | Default | Description |
 |--------|---------|-------------|
@@ -135,12 +133,13 @@ cd AE2NoByProduct
 ./gradlew build
 ```
 
-The output jar will be in `build/libs/`.
+This builds both loaders. The output jars are in `forge/build/libs/` and `fabric/build/libs/`, named `ae2nobyproduct-<loader>-<mcversion>-<modversion>.jar`.
 
 To launch a dev client for in-game testing:
 
 ```bash
-./gradlew runClient
+./gradlew :forge:runClient    # Forge
+./gradlew :fabric:runClient   # Fabric
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full dev environment setup instructions.
