@@ -7,6 +7,12 @@ architectury {
     forge()
 }
 
+// Loader + MC version in the jar name so the per-loader/per-version jars never collide
+// (e.g. ae2nobyproduct-forge-1.20.1-0.2.0.jar). gradle appends -<mod_version> automatically.
+base {
+    archivesName = "${rootProject.archives_base_name}-forge-${rootProject.minecraft_version}"
+}
+
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
