@@ -17,6 +17,9 @@ permissions:
 
 jobs:
   release:
+    # Only ever release from main, so a manual workflow_dispatch picked on a feature branch cannot
+    # publish a release from a tip that never went through the version-bump + changelog flow.
+    if: github.ref == 'refs/heads/main'
     runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@v4
@@ -35,9 +38,13 @@ jobs:
           TAG="v$VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          if gh release view "$TAG" >/dev/null 2>&1; then
+          # Dedupe on the git tag (release.yml creates the tag + Release together, so the tag is the
+          # source of truth); also treat an existing Release as already released. Either present => skip,
+          # so a leftover tag without a Release never re-runs the build/publish path.
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" >/dev/null 2>&1 \
+             || gh release view "$TAG" >/dev/null 2>&1; then
             echo "new=false" >> "$GITHUB_OUTPUT"
-            echo "Release $TAG already exists; nothing to do."
+            echo "Tag/Release $TAG already exists; nothing to do."
           else
             echo "new=true" >> "$GITHUB_OUTPUT"
             echo "Releasing $TAG."
