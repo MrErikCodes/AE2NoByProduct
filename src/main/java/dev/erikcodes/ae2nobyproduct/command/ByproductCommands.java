@@ -11,7 +11,6 @@ import dev.erikcodes.ae2nobyproduct.CommonMod;
 import dev.erikcodes.ae2nobyproduct.core.ByproductStripper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -29,21 +28,26 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * {@code /ae2nobyproduct strip-all}: an operator command that strips byproducts from every Pattern
- * Provider in the AE2 network of the block the player is looking at (block and cable-part forms alike).
+ * The {@code /ae2nobyproduct} operator command group (permission level 2). Both subcommands act on the
+ * AE2 network of the block the player is looking at (block and cable-part Pattern Providers alike):
+ * <ul>
+ *   <li>{@code inspect} reports how many patterns have byproducts that {@code strip-all} would remove,
+ *       changing nothing.</li>
+ *   <li>{@code strip-all} actually strips them. Being destructive and network-wide it is two-step: the
+ *       first run previews the count and arms the player against the targeted grid; a second run on that
+ *       same grid within {@link #CONFIRM_TICKS} applies it. Aiming at a different network, or letting the
+ *       window lapse, just re-previews.</li>
+ * </ul>
  *
- * <p>It is destructive and network-wide, so it is two-step: the first run <em>previews</em> how many
- * patterns would change (no mutation) and arms the player against the targeted grid; a second run on
- * that same grid within {@link #CONFIRM_TICKS} applies it. Aiming at a different network, or letting
- * the window lapse, just re-previews. Loader-agnostic: registered via Architectury and using only AE2
- * grid API that is identical across the supported AE2 versions.
+ * <p>Loader-agnostic: registered via Architectury, using only AE2 grid API that is identical across the
+ * supported AE2 versions.
  */
-public final class StripAllCommand {
-    private StripAllCommand() {}
+public final class ByproductCommands {
+    private ByproductCommands() {}
 
     /** How far the player can be from the targeted network block. */
     private static final double REACH = 8.0;
-    /** Confirmation window: 30 seconds at 20 ticks/second. */
+    /** Confirmation window for strip-all: 30 seconds at 20 ticks/second. */
     private static final long CONFIRM_TICKS = 600L;
 
     // The grid is held weakly and the map is pruned on expiry, so a one-off preview never pins an AE2
@@ -58,22 +62,57 @@ public final class StripAllCommand {
 
     private static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal(CommonMod.MOD_ID)
+            .then(Commands.literal("inspect")
+                .requires(source -> source.hasPermission(2))
+                .executes(ctx -> inspect(ctx.getSource())))
             .then(Commands.literal("strip-all")
                 .requires(source -> source.hasPermission(2))
-                .executes(ctx -> run(ctx.getSource()))));
+                .executes(ctx -> stripAll(ctx.getSource()))));
     }
 
-    private static int run(CommandSourceStack source) {
+    /** Read-only: report how many patterns in the targeted network strip-all would clean, changing nothing. */
+    private static int inspect(CommandSourceStack source) {
         ServerPlayer player = source.getPlayer();
         if (player == null) {
-            source.sendFailure(Component.translatable("command.ae2nobyproduct.strip_all.not_a_player"));
+            source.sendFailure(Component.translatable("command.ae2nobyproduct.not_a_player"));
             return 0;
         }
         ServerLevel level = player.serverLevel();
 
         IGrid grid = targetedGrid(player, level);
         if (grid == null) {
-            source.sendFailure(Component.translatable("command.ae2nobyproduct.strip_all.no_network"));
+            source.sendFailure(Component.translatable("command.ae2nobyproduct.no_network"));
+            return 0;
+        }
+
+        List<PatternProviderLogicHost> providers = patternProviders(grid);
+        int totalProviders = providers.size();
+        int[] tally = sweep(providers, level, false);
+        int patterns = tally[0];
+        int affected = tally[1];
+
+        if (patterns == 0) {
+            source.sendSuccess(
+                () -> Component.translatable("command.ae2nobyproduct.inspect.clean", totalProviders), false);
+        } else {
+            source.sendSuccess(
+                () -> Component.translatable("command.ae2nobyproduct.inspect.report", patterns, affected, totalProviders),
+                false);
+        }
+        return patterns;
+    }
+
+    private static int stripAll(CommandSourceStack source) {
+        ServerPlayer player = source.getPlayer();
+        if (player == null) {
+            source.sendFailure(Component.translatable("command.ae2nobyproduct.not_a_player"));
+            return 0;
+        }
+        ServerLevel level = player.serverLevel();
+
+        IGrid grid = targetedGrid(player, level);
+        if (grid == null) {
+            source.sendFailure(Component.translatable("command.ae2nobyproduct.no_network"));
             return 0;
         }
 

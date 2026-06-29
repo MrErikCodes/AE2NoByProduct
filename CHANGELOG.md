@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+- **`/ae2nobyproduct inspect` command** (operators, permission level 2): a read-only companion to `strip-all` that reports how many patterns in the AE2 network you are looking at have byproducts, without changing anything.
+
 ## [0.3.0] - 2026-06-29
 
 ### Added

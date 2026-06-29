@@ -26,7 +26,7 @@ Already encoded a bunch of patterns with byproducts? Don't re-do them. Craft the
 **Recipe (shapeless):** `16k Storage Component` + `Blank Pattern` + `Crafting Unit`
 
 ### 🧨 Network-wide cleanup command
-Need to clean a whole base at once instead of one provider at a time? Operators can run **`/ae2nobyproduct strip-all`** while looking at any block of an AE2 network: it strips byproducts from **every Pattern Provider in that network** (block and cable-part forms alike). It is deliberately two-step so a bulk edit is never an accident: the first run **previews** how many patterns would change, and running it again on that same network within 30 seconds applies it.
+Need to clean a whole base at once instead of one provider at a time? Operators can run **`/ae2nobyproduct strip-all`** while looking at any block of an AE2 network: it strips byproducts from **every Pattern Provider in that network** (block and cable-part forms alike). It is deliberately two-step so a bulk edit is never an accident: the first run **previews** how many patterns would change, and running it again on that same network within 30 seconds applies it. Prefer to just look first? **`/ae2nobyproduct inspect`** reports the same counts read-only, without touching anything.
 
 ### ⚙️ Full operator / pack-maker control
 A server config lets pack authors decide exactly how it behaves, including **forcing** byproduct removal for everyone with no per-player UI at all.

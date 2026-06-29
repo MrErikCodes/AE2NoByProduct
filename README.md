@@ -35,7 +35,7 @@ Already have patterns encoded with byproducts? The mod also includes a **Byprodu
 - **Works with AE2 add-ons**: any terminal that reuses AE2's Pattern Encoding Terminal (such as wireless pattern terminals) picks up the toggle automatically, with no conflicts with other AE2 add-ons.
 - **Operator control**: a small server config lets pack makers force-enable stripping for all players with no per-player UI (see [Configuration](#configuration)).
 - **Byproduct Remover tool**: a craftable item for cleaning patterns you *already* encoded. Shift + right-click a Pattern Provider and every processing pattern inside it is stripped of byproducts in one go.
-- **Network-wide cleanup command**: operators can run `/ae2nobyproduct strip-all` while looking at any block of an AE2 network to strip byproducts from every Pattern Provider in that whole network at once. It runs in two steps (once to preview the count, again within 30 seconds to apply), so a bulk edit is never accidental.
+- **Network-wide cleanup command**: operators can run `/ae2nobyproduct strip-all` while looking at any block of an AE2 network to strip byproducts from every Pattern Provider in that whole network at once. It runs in two steps (once to preview the count, again within 30 seconds to apply), so a bulk edit is never accidental. There is also `/ae2nobyproduct inspect`, a read-only version that just reports how many patterns have byproducts, changing nothing.
 
 ---
 

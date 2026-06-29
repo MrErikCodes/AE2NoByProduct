@@ -4,7 +4,7 @@ Guidance for AI agents (and humans) working in this repository. Read this before
 
 ## What this project is
 
-**AE2 No Byproduct** is an Applied Energistics 2 add-on for Minecraft. It strips byproducts (secondary outputs) from AE2 processing patterns via a per-player toggle in the Pattern Encoding Terminal, a server/pack config, a craftable Byproduct Remover item, and an operator `/ae2nobyproduct strip-all` command (network-wide cleanup). Ships for **MC 1.20.1 on Forge and Fabric (AE2 15.4.x)** and **MC 1.21.1 on NeoForge (AE2 19.2.x)**, all from one shared codebase. Note: 1.21.1 is NeoForge only, because AE2 has no Fabric or Forge build for 1.21.1. The build uses the Stonecraft Gradle plugin (Stonecutter + Architectury Loom) over a single flat source tree; each loader/version is a Stonecutter node.
+**AE2 No Byproduct** is an Applied Energistics 2 add-on for Minecraft. It strips byproducts (secondary outputs) from AE2 processing patterns via a per-player toggle in the Pattern Encoding Terminal, a server/pack config, a craftable Byproduct Remover item, and operator `/ae2nobyproduct` commands (`inspect` to report, `strip-all` for network-wide cleanup). Ships for **MC 1.20.1 on Forge and Fabric (AE2 15.4.x)** and **MC 1.21.1 on NeoForge (AE2 19.2.x)**, all from one shared codebase. Note: 1.21.1 is NeoForge only, because AE2 has no Fabric or Forge build for 1.21.1. The build uses the Stonecraft Gradle plugin (Stonecutter + Architectury Loom) over a single flat source tree; each loader/version is a Stonecutter node.
 
 ## Build & dev commands
 
