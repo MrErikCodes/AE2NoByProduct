@@ -21,6 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +46,9 @@ public final class StripAllCommand {
     /** Confirmation window: 30 seconds at 20 ticks/second. */
     private static final long CONFIRM_TICKS = 600L;
 
-    private record Armed(long expiresAtTick, IGrid grid) {}
+    // The grid is held weakly and the map is pruned on expiry, so a one-off preview never pins an AE2
+    // grid past the confirmation window (ARMED is static and lives for the server's whole run).
+    private record Armed(long expiresAtTick, WeakReference<IGrid> grid) {}
 
     private static final Map<UUID, Armed> ARMED = new HashMap<>();
 
@@ -76,8 +79,11 @@ public final class StripAllCommand {
 
         List<PatternProviderLogicHost> providers = patternProviders(grid);
         long now = level.getGameTime();
+        // Drop expired arming entries first, so nothing holds a grid past its 30s window.
+        ARMED.values().removeIf(a -> now > a.expiresAtTick());
         Armed armed = ARMED.get(player.getUUID());
-        boolean confirmed = armed != null && armed.grid() == grid && now <= armed.expiresAtTick();
+        // armed is non-expired (just pruned); confirm only if it is still the same, live grid.
+        boolean confirmed = armed != null && armed.grid().get() == grid;
 
         if (confirmed) {
             ARMED.remove(player.getUUID());
@@ -99,7 +105,7 @@ public final class StripAllCommand {
                 () -> Component.translatable("command.ae2nobyproduct.strip_all.nothing"), false);
             return 0;
         }
-        ARMED.put(player.getUUID(), new Armed(now + CONFIRM_TICKS, grid));
+        ARMED.put(player.getUUID(), new Armed(now + CONFIRM_TICKS, new WeakReference<>(grid)));
         source.sendSuccess(
             () -> Component.translatable("command.ae2nobyproduct.strip_all.preview", patterns, touched), false);
         return patterns;

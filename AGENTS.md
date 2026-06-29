@@ -44,13 +44,13 @@ See `RELEASE.md` for the full walkthrough. In short:
 2. Confirm `README.md` and `CURSEFORGE.md` are aligned and em-dash-free.
 3. Bump `mod.version` in `gradle.properties`.
 4. Move `CHANGELOG.md`'s `[Unreleased]` items into a new `## [x.y.z] - YYYY-MM-DD` section.
-5. Commit, then create a GitHub Release with tag `vx.y.z` (use "Generate release notes" for the body).
-6. The **`.github/workflows/release.yml`** workflow then runs `chiseledBuildAndCollect` + `chiseledPublishMods`: every loader/version jar is attached to the GitHub Release, and Stonecraft's mod-publish-plugin uploads each as its own correctly-tagged file to CurseForge and Modrinth in one command (see "How publishing works" in `RELEASE.md`).
+5. Merge those changes to `main` (via PR or a direct push).
+6. The version bump auto-triggers **`.github/workflows/release.yml`**: it tags `vx.y.z`, runs `chiseledBuildAndCollect`, creates the GitHub Release (jars + the `## [x.y.z]` changelog section as the body), and runs `chiseledPublishMods` to upload each loader/version jar to CurseForge and Modrinth. There is no manual "draft a release" step (see "How publishing works" in `RELEASE.md`).
 
 ### Pre-release checklist
 - [ ] `./gradlew chiseledBuild` green, tests pass
-- [ ] `mod.version` (in `gradle.properties`) bumped to match the release tag (the release workflow fails if they differ)
-- [ ] `CHANGELOG.md` updated (`chiseledPublishMods` reads the release notes from it)
+- [ ] `mod.version` (in `gradle.properties`) bumped to the new version (the workflow tags `v<mod.version>` on merge and skips if that tag already exists)
+- [ ] `CHANGELOG.md` finalized: `[Unreleased]` moved into a `## [x.y.z]` section (the workflow uses that section as the GitHub Release notes)
 - [ ] `README.md` + `CURSEFORGE.md` aligned, no em-dashes
 - [ ] Supported-versions tables current (`README.md`, `CURSEFORGE.md`)
 - [ ] Every shipped loader/version has a Stonecutter node and a `versions/dependencies/<mc>.properties`

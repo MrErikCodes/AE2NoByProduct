@@ -1,38 +1,56 @@
 name: Release
 
+# Auto-release on version bump. When a change to gradle.properties lands on main and the new
+# mod.version has no v<version> tag yet, this builds every loader/version, creates the v<version> GitHub
+# Release (jars + changelog notes), and publishes to Modrinth + CurseForge. So a release is just:
+# bump mod.version + finalize CHANGELOG, then merge to main. No manual "draft a release" step.
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths:
+      # A version bump always edits gradle.properties; nothing else can trigger a release.
+      - gradle.properties
+  workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  publish:
+  release:
     runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: false
 
-      # Fail fast if the release tag and gradle.properties mod.version disagree: the published files
-      # and the release label must be the same version.
-      - name: Verify the release tag matches gradle.properties
+      # Derive the version + tag from gradle.properties. If that tag already exists, every later step is
+      # skipped, so editing gradle.properties without bumping the version never double-releases.
+      - name: Resolve version
+        id: ver
         env:
-          # Pass the tag via env, never interpolate ${{ }} straight into the shell (script injection).
-          TAG_NAME: ${{ github.event.release.tag_name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          MOD_VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d= -f2 | tr -d '[:space:]')"
-          EXPECTED_TAG="v$MOD_VERSION"
-          echo "Release tag:                   $TAG_NAME"
-          echo "gradle.properties mod.version: $MOD_VERSION (expects tag $EXPECTED_TAG)"
-          # The release contract is a strict v<mod.version> tag (not a bare version).
-          if [ "$TAG_NAME" != "$EXPECTED_TAG" ]; then
-            echo "::error::Release tag '$TAG_NAME' must be '$EXPECTED_TAG' (format v<mod.version>). Bump mod.version (or fix the tag) and re-release."
-            exit 1
+          VERSION="$(grep -E '^mod\.version=' gradle.properties | cut -d= -f2 | tr -d '[:space:]')"
+          TAG="v$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "new=false" >> "$GITHUB_OUTPUT"
+            echo "Release $TAG already exists; nothing to do."
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+            echo "Releasing $TAG."
+          fi
+          # Honour [skip-stores] in the triggering commit message: attach to the GitHub Release only.
+          if git log -1 --pretty=%B | grep -qF '[skip-stores]'; then
+            echo "skip_stores=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip_stores=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Set up JDK 17 + 21
+        if: steps.ver.outputs.new == 'true'
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -41,34 +59,52 @@ jobs:
             21
 
       - name: Set up Gradle
+        if: steps.ver.outputs.new == 'true'
         uses: gradle/actions/setup-gradle@v4
 
       # Builds every loader/version and collects the remapped jars into build/libs/.
       - name: Build and collect all jars
+        if: steps.ver.outputs.new == 'true'
         run: |
           chmod +x ./gradlew
           ./gradlew chiseledBuildAndCollect --stacktrace
 
-      - name: Attach jars to the GitHub Release
-        run: gh release upload "$TAG_NAME" build/libs/*.jar --clobber
+      # Pull this version's section out of CHANGELOG.md for the GitHub Release body.
+      - name: Extract changelog notes
+        if: steps.ver.outputs.new == 'true'
+        env:
+          VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          awk -v ver="$VERSION" '
+            $0 ~ ("^## \\[" ver "\\]") {f=1; next}
+            f && /^## \[/ {exit}
+            f {print}
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "See CHANGELOG.md for the full list of changes." > release-notes.md
+          fi
+          echo "----- release notes -----"; cat release-notes.md
+
+      # Creates the tag + GitHub Release at this commit and attaches every loader/version jar.
+      - name: Create the GitHub Release
+        if: steps.ver.outputs.new == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          gh release create "${{ steps.ver.outputs.tag }}" build/libs/*.jar \
+            --target "${{ github.sha }}" \
+            --title "AE2 No Byproduct ${{ steps.ver.outputs.version }}" \
+            --notes-file release-notes.md
 
-      # Stonecraft's built-in publishing (mod-publish-plugin) uploads each loader/version as its own
-      # correctly-tagged file to Modrinth and CurseForge in one task, reading the notes from
-      # CHANGELOG.md. Put [skip-stores] in the release notes to attach to GitHub only.
+      # Stonecraft's mod-publish-plugin uploads each loader/version jar to Modrinth + CurseForge.
+      # READ THIS BEFORE CHANGING: DO_PUBLISH is Stonecraft's DRY-RUN flag, not a publish flag, so its
+      # value is inverted: "false" -> dryRun=false -> it REALLY uploads (what we want); "true"/unset ->
+      # dry run. Keep it "false". To skip the stores for a release, put [skip-stores] in the commit
+      # message that bumps the version (the skip_stores guard below), do NOT flip this to "true".
       - name: Publish to Modrinth and CurseForge
-        if: ${{ !contains(github.event.release.body, '[skip-stores]') }}
+        if: steps.ver.outputs.new == 'true' && steps.ver.outputs.skip_stores == 'false'
         run: ./gradlew chiseledPublishMods --stacktrace
         env:
-          # READ THIS BEFORE CHANGING: DO_PUBLISH is Stonecraft's DRY-RUN flag, not a publish flag.
-          # Stonecraft does `dryRun = DO_PUBLISH.toBoolean()` (see its Publishing.kt), so the value is
-          # inverted from what the name suggests:
-          #   "false"      -> dryRun=false -> REALLY uploads to Modrinth + CurseForge   <-- what we want
-          #   "true"/unset -> dryRun=true  -> dry run, builds the upload but sends nothing
-          # Keep this "false" to actually publish. To skip the stores, use [skip-stores] in the release
-          # notes (the `if:` above), do NOT flip this to "true".
           DO_PUBLISH: "false"
           RELEASE_TYPE: release
           MODRINTH_ID: ae2-no-byproduct
