@@ -74,3 +74,14 @@ modSettings {
         narrator = false
     }
 }
+
+// CurseForge requires every file to declare its environment (client/server); Stonecraft's auto-publish
+// config does not set it, so publishCurseforge fails with "At least one of client or server must be set
+// to true". This is a server AND client mod, so mark both required. Additive to Stonecraft's curseforge
+// config, and only matters when publishing (no effect on a normal build).
+extensions.configure<me.modmuss50.mpp.ModPublishExtension> {
+    curseforge {
+        clientRequired.set(true)
+        serverRequired.set(true)
+    }
+}
