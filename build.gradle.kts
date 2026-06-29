@@ -60,6 +60,15 @@ tasks.matching { it.name == "compileTestJava" }.configureEach {
     dependsOn(tasks.matching { it.name == "generatePackMCMetaJson" })
 }
 
+// Forge's dev launch loads the mod as a split classes/resources sourceset and does not reliably pick
+// up the mixin configs from mods.toml [[mixins]], so register them with loom explicitly (the shipped
+// jar still uses mods.toml). NeoForge and Fabric read their configs from their own metadata.
+if (mod.isForge) {
+    loom {
+        forge.mixinConfigs("ae2nobyproduct.mixins.json", "ae2nobyproduct.client.mixins.json")
+    }
+}
+
 modSettings {
     clientOptions {
         narrator = false

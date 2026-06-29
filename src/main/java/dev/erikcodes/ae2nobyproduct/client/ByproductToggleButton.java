@@ -9,10 +9,12 @@ import net.minecraft.network.chat.Component;
 // AEBaseScreen#addToLeftToolbar (signature <B extends Button>) and renders with the native AE2
 // toolbar frame + an icon, matching the adjacent left-toolbar buttons.
 //
-// IconButton draws everything in renderWidget via getIcon(); both AbstractWidget#render and
-// IconButton#renderWidget are final on 1.21+, so we never touch the render path. Instead the button
-// refreshes its icon/visibility/tooltip reactively whenever the server state syncs in (see
-// ClientByproductState#onChange), which also covers a sync arriving after the screen was built.
+// Visibility is config-driven and arrives via a server sync that can land before or after this screen
+// is built, so it must be (re)applied robustly. AE2's VerticalButtonBar re-lays-out every frame and
+// skips buttons whose `visible` is false, so the field just has to be kept correct:
+//   - 1.20.1: AbstractWidget#render is overridable, so we refresh every frame (timing-proof).
+//   - 1.21+:  render and IconButton#renderWidget are both final, so we instead refresh reactively
+//             whenever the state syncs in (ClientByproductState#onChange).
 public class ByproductToggleButton extends IconButton {
 
     public ByproductToggleButton() {
@@ -46,4 +48,14 @@ public class ByproductToggleButton extends IconButton {
         ModNetworking.sendSetToggle(ClientByproductState.effectiveState);
         refresh();
     }
+
+    //? if <1.21 {
+    // 1.20.1: refresh visibility/tooltip every frame so the button reliably appears the moment the
+    // config syncs in, independent of packet timing. (super.render delegates to AE2's icon drawing.)
+    @Override
+    public void render(net.minecraft.client.gui.GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        refresh();
+        super.render(g, mouseX, mouseY, partialTick);
+    }
+    //?}
 }
