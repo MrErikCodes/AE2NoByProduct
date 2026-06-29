@@ -80,6 +80,23 @@ modSettings {
 // to true". This is a server AND client mod, so mark both required. Additive to Stonecraft's curseforge
 // config, and only matters when publishing (no effect on a normal build).
 extensions.configure<me.modmuss50.mpp.ModPublishExtension> {
+    // Store notes: only this version's CHANGELOG section, not the whole file. Stonecraft's auto-publish
+    // sets the changelog to the entire CHANGELOG.md (the Keep-a-Changelog header + Unreleased + every
+    // past version), so override it with just the "## [<mod.version>]" body. (The GitHub Release notes
+    // are extracted separately in release.yml.)
+    rootProject.layout.projectDirectory.file("CHANGELOG.md").asFile
+        .takeIf { it.exists() }
+        ?.let { file ->
+            val lines = file.readText().lines()
+            val start = lines.indexOfFirst { it.trimStart().startsWith("## [${mod.version}]") }
+            if (start >= 0) {
+                val body = lines.drop(start + 1)
+                    .takeWhile { !it.trimStart().startsWith("## [") }
+                    .joinToString("\n").trim()
+                if (body.isNotBlank()) changelog.set(body)
+            }
+        }
+
     curseforge {
         clientRequired.set(true)
         serverRequired.set(true)
