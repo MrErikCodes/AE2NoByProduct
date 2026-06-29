@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/AE2NoByproduct/AE2NoByproduct/issues"
+
+[[mods]]
+modId = "${id}"
+version = "${version}"
+displayName = "${name}"
+authors = "ErikCodes"
+description = '''
+${description}
+'''
+
+# Same mixin classes as the other loaders, but at JAVA_21 compatibility (1.21.1 compiles to Java 21
+# bytecode). A NeoForge-specific config keeps each loader's mixin JSON valid: Stonecutter cannot toggle
+# compatibilityLevel inside JSON without leaving directive comments that Mixin's parser rejects.
+[[mixins]]
+config = "ae2nobyproduct.neoforge.mixins.json"
+[[mixins]]
+config = "ae2nobyproduct.client.neoforge.mixins.json"
+
+[[dependencies.${id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${id}]]
+modId = "ae2"
+type = "required"
+versionRange = "[19,)"
+ordering = "AFTER"
+side = "BOTH"

@@ -9,9 +9,16 @@ public final class ClientByproductState {
     public static boolean effectiveState = false;
     public static boolean featureEnabled = false;
     public static boolean allowToggle = false;
+
+    /** Set by the toolbar button so it can refresh its icon/visibility/tooltip when a sync arrives.
+     *  A plain Runnable keeps this class free of client-only references. */
+    public static Runnable onChange;
+
     private ClientByproductState() {}
+
     public static void update(boolean eff, boolean fe, boolean at) {
         effectiveState = eff; featureEnabled = fe; allowToggle = at;
+        if (onChange != null) onChange.run();
     }
     public static boolean showButton() { return featureEnabled && allowToggle; }
 }

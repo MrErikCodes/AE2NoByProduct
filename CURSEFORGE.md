@@ -32,7 +32,7 @@ A server config lets pack authors decide exactly how it behaves, including **for
 
 ## 🛠️ Configuration
 
-The config is created on first launch in your `config/` folder like other mods: `config/ae2nobyproduct.toml` on **Forge**, `config/ae2nobyproduct.json` on **Fabric**. The options are identical on both loaders. On a multiplayer server, the server's config is the one that applies.
+The config is created on first launch in your `config/` folder like other mods: a single JSON file, `config/ae2nobyproduct.json`, on every loader. The options are identical on all loaders. On a multiplayer server, the server's config is the one that applies.
 
 | Option | Default | What it does |
 |--------|---------|--------------|
@@ -43,9 +43,11 @@ The config is created on first launch in your `config/` folder like other mods: 
 | `showMessages` | `true` | `false` = silence the Byproduct Remover's chat feedback. |
 
 **Want byproducts gone pack-wide, no questions asked?**
-```toml
-allowPlayerToggle = false
-defaultStrip = true
+```json
+{
+  "allowPlayerToggle": false,
+  "defaultStrip": true
+}
 ```
 The button disappears and every player's processing patterns are stripped automatically.
 
@@ -63,17 +65,16 @@ The button disappears and every player's processing patterns are stripped automa
 
 > **Server and client mod.** Install AE2 No Byproduct on **both** the server and the client. On a dedicated or LAN server it must be present on the server *and* on every client that connects: the toggle button and Byproduct Remover live on the client, while stripping is enforced on the server. In single player, one copy in your `mods/` folder covers both.
 
-| | |
-|---|---|
-| **Minecraft** | 1.20.1 |
-| **Loader** | Forge 47.x, or Fabric (Loader 0.16+ with Fabric API) |
-| **Required** | [Applied Energistics 2](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2) 15.4.x |
+| Minecraft | Loader | Required: [Applied Energistics 2](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2) | Java |
+|---|---|---|---|
+| **1.20.1** | Forge 47.x, or Fabric (Loader 0.16+ with Fabric API) | 15.4.x | 17 |
+| **1.21.1** | NeoForge 21.1.x | 19.2.x | 21 |
 
 *(AE2 already depends on GuideME, so if you have AE2, you're set.)*
 
-Pick the jar that matches your loader: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` for Forge, `ae2nobyproduct-fabric-1.20.1-x.y.z.jar` for Fabric.
+1.21.1 is NeoForge only, because Applied Energistics 2 has no Fabric or Forge build for 1.21.1.
 
-**On the roadmap:** 1.21.1 (NeoForge), built from the same single codebase. 1.21.1 will be NeoForge only, because Applied Energistics 2 has no Fabric build for 1.21.1.
+Pick the jar that matches your loader and Minecraft version: it is named `ae2nobyproduct-<loader>-<modversion>+mc<mcversion>.jar`, for example `ae2nobyproduct-forge-0.2.0+mc1.20.1.jar`, `ae2nobyproduct-fabric-0.2.0+mc1.20.1.jar`, or `ae2nobyproduct-neoforge-0.2.0+mc1.21.1.jar`. All loaders and versions are built from the same single codebase using the Stonecraft Gradle plugin (Stonecutter + Architectury Loom).
 
 ---
 

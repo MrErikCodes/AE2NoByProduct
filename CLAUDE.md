@@ -10,11 +10,11 @@ Instructions for Claude Code (and other AI assistants) in this repo.
 - This is an **AE2 add-on**: when touching anything that targets AE2 internals (Mixins, the Byproduct Remover's pattern access), consult the AE2 source for the exact version, since signatures drift between versions.
 
 ## Before claiming a release is ready
-Run the **Pre-release checklist in [AGENTS.md](AGENTS.md)**: build green, `mod_version` bumped to match the tag, `CHANGELOG.md` updated, docs aligned and em-dash-free, supported-versions tables current, and `.github/workflows/release.yml` (`loaders` / `game-versions` / `files`) matching what the jar actually supports.
+Run the **Pre-release checklist in [AGENTS.md](AGENTS.md)**: `./gradlew chiseledBuild` green for every loader/version, `mod.version` in `gradle.properties` bumped to match the tag, `CHANGELOG.md` updated, docs aligned and em-dash-free, and the supported-versions tables current.
 
 ## After changing the build, loaders, or MC versions
-Update `.github/workflows/release.yml`, the supported-versions tables in both docs, and the matrix note in `AGENTS.md`. Re-verify the Mixin targets against the new AE2 version.
+Add a Stonecutter node in `settings.gradle.kts` and a matching `versions/dependencies/<mc>.properties` file, update the supported-versions tables in both docs and the matrix note in `AGENTS.md`, and re-verify the Mixin targets against the new AE2 version. The release workflow is loader/version-agnostic (`chiseledPublishMods`), so it needs no per-version edits.
 
 ## Workflow
 - Branch from `main`, keep changes focused, open a PR (CodeRabbit reviews PRs automatically).
-- Verify in-game with `./gradlew runClient` when behavior changes; visual/GUI confirmation is the human's job.
+- Verify in-game with `./gradlew runActive` (set the active version first via the Stonecutter `Set active project to ...` task) when behavior changes; visual/GUI confirmation is the human's job.

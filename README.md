@@ -44,26 +44,24 @@ Already have patterns encoded with byproducts? The mod also includes a **Byprodu
 
 **Available now**
 
-| Component | Version |
-|-----------|---------|
-| Minecraft | 1.20.1 |
-| Mod loader | Forge 47.x, or Fabric (Fabric Loader 0.16+ with Fabric API) |
-| Applied Energistics 2 | 15.4.x |
-| Java | 17 (toolchain auto-provisioned by Gradle) |
+| Minecraft | Mod loader | Applied Energistics 2 | Java |
+|-----------|------------|-----------------------|------|
+| 1.20.1 | Forge 47.x, or Fabric (Fabric Loader 0.16+ with Fabric API) | 15.4.x | 17 |
+| 1.21.1 | NeoForge 21.1.x | 19.2.x | 21 |
+
+> The Gradle toolchain auto-provisions both Java 17 (for 1.20.1) and Java 21 (for 1.21.1).
+
+> 1.21.1 is NeoForge only, because Applied Energistics 2 has no Fabric or Forge build for 1.21.1.
 
 > AE2 itself depends on GuideME. If you already have AE2 installed, GuideME is already present, so no additional action is needed.
 
-**Planned (not yet released)**
-
-- 1.21.1 (NeoForge)
-
-Multi-version support is on the roadmap and is built from the same single codebase using Architectury + Stonecutter. Note that 1.21.1 will be NeoForge only, because Applied Energistics 2 has no Fabric build for 1.21.1. Watch the repository for releases.
+All loaders and versions are built from the same single codebase using the Stonecraft Gradle plugin (Stonecutter + Architectury Loom).
 
 ---
 
 ## Installation
 
-1. Download the jar **for your loader** from the [Releases](https://github.com/AE2NoByproduct/AE2NoByproduct/releases) page, [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), or [Modrinth](https://modrinth.com/mod/ae2-no-byproduct). The jar name tells you which: `ae2nobyproduct-forge-1.20.1-x.y.z.jar` for Forge, `ae2nobyproduct-fabric-1.20.1-x.y.z.jar` for Fabric.
+1. Download the jar **for your loader and Minecraft version** from the [Releases](https://github.com/AE2NoByproduct/AE2NoByproduct/releases) page, [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ae2-no-byproduct), or [Modrinth](https://modrinth.com/mod/ae2-no-byproduct). The jar name tells you which: it is `ae2nobyproduct-<loader>-<modversion>+mc<mcversion>.jar`, for example `ae2nobyproduct-forge-0.2.0+mc1.20.1.jar` (Forge, 1.20.1), `ae2nobyproduct-fabric-0.2.0+mc1.20.1.jar` (Fabric, 1.20.1), or `ae2nobyproduct-neoforge-0.2.0+mc1.21.1.jar` (NeoForge, 1.21.1).
 2. Drop the jar into your `mods/` folder alongside Applied Energistics 2. In multiplayer, do this on the **server and on every client** (it is a server and client mod).
 3. Launch Minecraft. No extra setup required.
 
@@ -93,7 +91,7 @@ For patterns that were *already* encoded with byproducts, craft the **Byproduct 
 
 ## Configuration
 
-The config is created automatically on first launch with defaults, in your `config/` folder like other mods: `config/ae2nobyproduct.toml` on **Forge**, `config/ae2nobyproduct.json` on **Fabric**. The options are identical on both loaders. The mod is server-authoritative: on a multiplayer server, the server's config is what applies.
+The config is created automatically on first launch with defaults, in your `config/` folder like other mods: a single JSON file, `config/ae2nobyproduct.json`, on every loader. The options are identical on all loaders. The mod is server-authoritative: on a multiplayer server, the server's config is what applies.
 
 | Option | Default | Description |
 |--------|---------|-------------|
@@ -107,9 +105,11 @@ The config is created automatically on first launch with defaults, in your `conf
 
 To make byproduct stripping always-on with no player choice (useful when you want every autocrafting pattern in the pack to be byproduct-free), set:
 
-```toml
-allowPlayerToggle = false
-defaultStrip = true
+```json
+{
+  "allowPlayerToggle": false,
+  "defaultStrip": true
+}
 ```
 
 No button will appear in the terminal; all processing patterns will silently strip byproducts for every player.
@@ -125,21 +125,26 @@ No button will appear in the terminal; all processing patterns will silently str
 
 ## Building from Source
 
-Java 17 is required. The Gradle wrapper provisions a JDK 17 toolchain automatically if one is not found locally.
+The project uses the Stonecraft Gradle plugin (Stonecutter + Architectury Loom) with a single flat source tree; each loader/version is a Stonecutter "node". The Gradle toolchain provisions both Java 17 (1.20.1) and Java 21 (1.21.1) automatically if they are not found locally.
 
 ```bash
 git clone https://github.com/AE2NoByproduct/AE2NoByproduct.git
 cd AE2NoByproduct
-./gradlew build
+./gradlew chiseledBuild
 ```
 
-This builds both loaders. The output jars are in `forge/build/libs/` and `fabric/build/libs/`, named `ae2nobyproduct-<loader>-<mcversion>-<modversion>.jar`.
+`chiseledBuild` builds every loader and version. Use `./gradlew chiseledBuildAndCollect` to gather all jars into `build/libs/`. The output jars are named `ae2nobyproduct-<loader>-<modversion>+mc<mcversion>.jar` (for example `ae2nobyproduct-neoforge-0.2.0+mc1.21.1.jar`); each node also keeps its own jar under `versions/<node>/build/libs/`.
 
-To launch a dev client for in-game testing:
+To launch a dev client for in-game testing, run the currently active version:
 
 ```bash
-./gradlew :forge:runClient    # Forge
-./gradlew :fabric:runClient   # Fabric
+./gradlew runActive
+```
+
+Switch the active version with the Stonecutter task, for example:
+
+```bash
+./gradlew "Set active project to 1.21.1-neoforge"
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full dev environment setup instructions.

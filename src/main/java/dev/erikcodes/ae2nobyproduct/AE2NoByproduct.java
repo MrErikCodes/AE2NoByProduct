@@ -12,12 +12,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 /*?}*/
 
 /*? if neoforge {*/
-/*import dev.architectury.platform.neoforge.EventBuses;
-import net.neoforged.bus.api.IEventBus;
+/*import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-*/
-/*?}*/
+
+*//*?}*/
 
 /**
  * Mod entry point and the only loader-specific class in the mod. Each loader's bootstrap installs the
@@ -26,8 +25,8 @@ import net.neoforged.fml.common.Mod;
  */
 /*? if forgeLike {*/
 /*@Mod(CommonMod.MOD_ID)
-public final class AE2NoByproduct {*/
-/*?}*/
+public final class AE2NoByproduct {
+*//*?}*/
 /*? if fabric {*/
 public final class AE2NoByproduct implements ModInitializer {
 /*?}*/
@@ -48,10 +47,10 @@ public final class AE2NoByproduct implements ModInitializer {
     /*?}*/
 
     /*? if neoforge {*/
-    /*public AE2NoByproduct(IEventBus modEventBus, ModContainer modContainer) {
-        EventBuses.registerModEventBus(CommonMod.MOD_ID, modEventBus);
+    /*// NeoForge: Architectury auto-discovers the mod event bus (no registerModEventBus needed, unlike
+    // Forge). The constructor params are required by NeoForge's @Mod entry shape but unused here.
+    public AE2NoByproduct(IEventBus modEventBus, ModContainer modContainer) {
         CommonMod.init();
     }
-    */
-    /*?}*/
+    *//*?}*/
 }

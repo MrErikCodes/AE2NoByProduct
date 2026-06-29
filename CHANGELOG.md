@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+- **Minecraft 1.21.1 support on NeoForge** (against Applied Energistics 2 19.2.x), built from the same single codebase. 1.21.1 is NeoForge only, because AE2 has no Fabric or Forge build for 1.21.1.
+
+### Changed
+- Migrated the build to the **Stonecraft** Gradle plugin (Stonecutter + Architectury Loom): the old `common` / `forge` / `fabric` Architectury subprojects are replaced by a single flat `src/` tree, where each loader and Minecraft version is a Stonecutter node. Build everything with `./gradlew chiseledBuild` (or `chiseledBuildAndCollect`) and run the active version with `./gradlew runActive`.
+- **Unified the config to a single JSON file on every loader** (`config/ae2nobyproduct.json`). On Forge the config moved from `.toml` to `.json`; the options, defaults, and keys are unchanged. If you customized the Forge `.toml` config, re-apply your values in the new `.json` file.
+- The per-player toggle now persists via vanilla `SavedData` (keyed by player UUID) on every loader, replacing the loader-specific persistence used before. It still survives relog, server restart, and death.
+- Release jars are now named `ae2nobyproduct-<loader>-<modversion>+mc<mcversion>.jar` (for example `ae2nobyproduct-neoforge-0.2.0+mc1.21.1.jar`), and publishing is handled by Stonecraft's mod-publish-plugin in a single `./gradlew chiseledPublishMods` step.
+
 ## [0.2.0] - 2026-06-28
 
 ### Added

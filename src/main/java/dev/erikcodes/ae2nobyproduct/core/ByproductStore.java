@@ -26,7 +26,11 @@ public final class ByproductStore extends SavedData {
 
     public ByproductStore() {}
 
+    //? if >=1.21 {
+    /*public static ByproductStore load(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+    *///?} else {
     public static ByproductStore load(CompoundTag tag) {
+    //?}
         ByproductStore store = new ByproductStore();
         CompoundTag map = tag.getCompound(KEY);
         for (String id : map.getAllKeys()) {
@@ -36,7 +40,11 @@ public final class ByproductStore extends SavedData {
     }
 
     @Override
+    //? if >=1.21 {
+    /*public CompoundTag save(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+    *///?} else {
     public CompoundTag save(CompoundTag tag) {
+    //?}
         CompoundTag map = new CompoundTag();
         toggles.forEach((id, value) -> map.putBoolean(id.toString(), value));
         tag.put(KEY, map);
@@ -44,7 +52,12 @@ public final class ByproductStore extends SavedData {
     }
 
     private static ByproductStore of(MinecraftServer server) {
+        //? if >=1.21 {
+        /*return server.overworld().getDataStorage().computeIfAbsent(
+            new SavedData.Factory<>(ByproductStore::new, ByproductStore::load, null), NAME);
+        *///?} else {
         return server.overworld().getDataStorage().computeIfAbsent(ByproductStore::load, ByproductStore::new, NAME);
+        //?}
     }
 
     /** Read this player's saved toggle, or {@code def} if it is unset or the player is not on a server. */

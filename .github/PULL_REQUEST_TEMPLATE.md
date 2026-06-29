@@ -19,17 +19,17 @@ Closes #<issue-number>
 
 <!-- Describe how you verified this change works correctly. -->
 
-- [ ] Built successfully with `./gradlew build`
-- [ ] Tested in-game via `./gradlew runClient`
+- [ ] Built successfully with `./gradlew chiseledBuild`
+- [ ] Tested in-game via `./gradlew runActive`
 
 **In-game test steps:**
 <!-- e.g. "Opened Pattern Encoding Terminal, toggled strip ON, encoded a pattern with two outputs, and confirmed only the first output was kept." -->
 
 ## Checklist
 
-- [ ] `./gradlew build` passes with no errors or warnings introduced by this PR
+- [ ] `./gradlew chiseledBuild` passes with no errors or warnings introduced by this PR
 - [ ] Code follows the existing style (indentation, brace style, naming)
-- [ ] Mixin targets verified against the AE2 version listed in `gradle.properties`
+- [ ] Mixin targets verified against the AE2 version for the target MC (`versions/dependencies/<mc>.properties`)
 - [ ] Documentation updated if this changes user-visible behavior (README, config descriptions)
 - [ ] `README.md` and `CURSEFORGE.md` kept aligned; no em-dashes added
 - [ ] `CHANGELOG.md` updated under `[Unreleased]` if this changes user-visible behavior

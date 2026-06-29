@@ -26,8 +26,9 @@ stonecutter {
             for (it in loaders) version("$version-$it", version)
         }
 
-        // MC 1.20.1 ships AE2 on Forge and Fabric. NeoForge 1.21.1 is added in a later stage.
+        // MC 1.20.1 ships AE2 on Forge and Fabric; MC 1.21.1 ships AE2 on NeoForge only (no Fabric).
         mc("1.20.1", "fabric", "forge")
+        mc("1.21.1", "neoforge")
 
         vcsVersion = "1.20.1-fabric"
     }

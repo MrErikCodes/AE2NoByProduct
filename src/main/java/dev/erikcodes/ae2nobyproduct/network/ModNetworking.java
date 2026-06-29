@@ -7,6 +7,10 @@ import dev.erikcodes.ae2nobyproduct.core.ByproductConfig;
 import dev.erikcodes.ae2nobyproduct.core.ByproductService;
 import dev.erikcodes.ae2nobyproduct.core.ByproductStore;
 import io.netty.buffer.Unpooled;
+//? if >=1.21 {
+/*import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+*///?}
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,10 +28,20 @@ import net.minecraft.server.level.ServerPlayer;
  * {@link ByproductStore}; both are shared across loaders, so the handlers are fully loader-agnostic.
  */
 public final class ModNetworking {
-    public static final ResourceLocation SET_TOGGLE = new ResourceLocation(CommonMod.MOD_ID, "set_toggle");
-    public static final ResourceLocation SYNC_STATE = new ResourceLocation(CommonMod.MOD_ID, "sync_state");
+    public static final ResourceLocation SET_TOGGLE = id("set_toggle");
+    public static final ResourceLocation SYNC_STATE = id("sync_state");
 
     private ModNetworking() {}
+
+    /** Build a mod ResourceLocation. The (namespace, path) constructor is private as of 1.21, replaced
+     *  by the fromNamespaceAndPath factory. */
+    private static ResourceLocation id(String path) {
+        //? if >=1.21 {
+        /*return ResourceLocation.fromNamespaceAndPath(CommonMod.MOD_ID, path);
+        *///?} else {
+        return new ResourceLocation(CommonMod.MOD_ID, path);
+        //?}
+    }
 
     /**
      * Registers the C2S receiver. Safe to call on both physical sides (it only fires server-side, when
@@ -67,7 +81,11 @@ public final class ModNetworking {
 
     /** C2S: ask the server to set this player's toggle. */
     public static void sendSetToggle(boolean enabled) {
+        //? if >=1.21 {
+        /*RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), RegistryAccess.EMPTY);
+        *///?} else {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        //?}
         buf.writeBoolean(enabled);
         NetworkManager.sendToServer(SET_TOGGLE, buf);
     }
@@ -75,7 +93,11 @@ public final class ModNetworking {
     /** S2C: push the effective state + config gates to one player. */
     public static void sendSyncState(ServerPlayer player) {
         ByproductConfig cfg = ByproductConfig.get();
+        //? if >=1.21 {
+        /*RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), RegistryAccess.EMPTY);
+        *///?} else {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        //?}
         buf.writeBoolean(ByproductService.effectiveFor(player));
         buf.writeBoolean(cfg.enableFeature());
         buf.writeBoolean(cfg.allowPlayerToggle());

@@ -3,27 +3,31 @@ package dev.erikcodes.ae2nobyproduct.client;
 import appeng.client.gui.Icon;
 import appeng.client.gui.widgets.IconButton;
 import dev.erikcodes.ae2nobyproduct.network.ModNetworking;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 // Extends AE2's IconButton (itself a net.minecraft...Button) so it can be handed to
-// AEBaseScreen#addToLeftToolbar (signature <B extends Button>) and renders with the
-// native AE2 toolbar frame + an icon, matching the adjacent left-toolbar buttons.
-// IconButton handles all drawing in renderWidget via the chosen getIcon(); we must NOT
-// override renderWidget. Position is (0,0); AE2's VerticalButtonBar assigns x/y each frame.
+// AEBaseScreen#addToLeftToolbar (signature <B extends Button>) and renders with the native AE2
+// toolbar frame + an icon, matching the adjacent left-toolbar buttons.
+//
+// IconButton draws everything in renderWidget via getIcon(); both AbstractWidget#render and
+// IconButton#renderWidget are final on 1.21+, so we never touch the render path. Instead the button
+// refreshes its icon/visibility/tooltip reactively whenever the server state syncs in (see
+// ClientByproductState#onChange), which also covers a sync arriving after the screen was built.
 public class ByproductToggleButton extends IconButton {
-    private boolean lastKnownState;
 
     public ByproductToggleButton() {
         // No-op OnPress: we override onPress() below. Keeps the required no-arg ctor.
         super(b -> {});
-        lastKnownState = ClientByproductState.effectiveState;
-        refreshTooltip();
+        ClientByproductState.onChange = this::refresh;
+        refresh();
     }
 
-    // IconButton implements ITooltip and renders the tooltip from getTooltipMessage(),
-    // which returns getMessage(); so setting the message is AE2's native tooltip path.
-    private void refreshTooltip() {
+    /** Pull the latest synced state into this widget's visibility + tooltip. */
+    private void refresh() {
+        // Visibility is config-driven and may sync in after this screen was built.
+        this.visible = ClientByproductState.showButton();
+        // IconButton implements ITooltip and renders the tooltip from getMessage(), so setting the
+        // message is AE2's native tooltip path.
         setMessage(Component.translatable(
             ClientByproductState.effectiveState ? "tooltip.ae2nobyproduct.on" : "tooltip.ae2nobyproduct.off"));
     }
@@ -36,21 +40,10 @@ public class ByproductToggleButton extends IconButton {
 
     @Override
     public void onPress() {
-        boolean nv = !ClientByproductState.effectiveState;
-        ClientByproductState.effectiveState = nv;
-        lastKnownState = nv;
-        ModNetworking.sendSetToggle(nv);
-        refreshTooltip();
-    }
-
-    @Override
-    public void render(GuiGraphics g, int mouseX, int mouseY, float pt) {
-        // Visibility is config-driven and may sync in after this screen was built.
-        this.visible = ClientByproductState.showButton();
-        if (lastKnownState != ClientByproductState.effectiveState) {
-            lastKnownState = ClientByproductState.effectiveState;
-            refreshTooltip();
-        }
-        super.render(g, mouseX, mouseY, pt);
+        // Optimistic local flip; the server echoes the authoritative state back via sync, which calls
+        // refresh() again and corrects this if the toggle was rejected.
+        ClientByproductState.effectiveState = !ClientByproductState.effectiveState;
+        ModNetworking.sendSetToggle(ClientByproductState.effectiveState);
+        refresh();
     }
 }

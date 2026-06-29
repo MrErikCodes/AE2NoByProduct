@@ -28,16 +28,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = PatternEncodingTermMenu.class, remap = false)
 public abstract class PatternEncodingTermMenuMixin {
 
+    // AE2 15.4 (1.20.1) passes the in/out stacks to PatternDetailsHelper.encodeProcessingPattern as
+    // GenericStack[]; AE2 19.x (1.21.1) passes them as List<GenericStack>. Only the @At descriptor, the
+    // redirect parameter types, and the "keep one output" line differ; the rest is shared.
     @Redirect(
         method = "encodeProcessingPattern",
         remap = false,
         at = @At(
             value = "INVOKE",
+            //? if >=1.21 {
+            /*target = "Lappeng/api/crafting/PatternDetailsHelper;encodeProcessingPattern(Ljava/util/List;Ljava/util/List;)Lnet/minecraft/world/item/ItemStack;",
+            *///?} else {
             target = "Lappeng/api/crafting/PatternDetailsHelper;encodeProcessingPattern([Lappeng/api/stacks/GenericStack;[Lappeng/api/stacks/GenericStack;)Lnet/minecraft/world/item/ItemStack;",
+            //?}
             remap = true
         )
     )
+    //? if >=1.21 {
+    /*private ItemStack ae2nobyproduct$stripByproducts(java.util.List<GenericStack> inputs, java.util.List<GenericStack> outputs) {
+    *///?} else {
     private ItemStack ae2nobyproduct$stripByproducts(GenericStack[] inputs, GenericStack[] outputs) {
+    //?}
         Player player = ((AEBaseMenu) (Object) this).getPlayer();
         if (player != null && ByproductService.shouldStrip(player)) {
             // Outputs are sparse: slots can be null, and the primary output is not necessarily slot 0.
@@ -45,7 +56,11 @@ public abstract class PatternEncodingTermMenuMixin {
             // the tool agree on which output survives.
             for (GenericStack output : outputs) {
                 if (output != null) {
+                    //? if >=1.21 {
+                    /*outputs = java.util.List.of(output);
+                    *///?} else {
                     outputs = new GenericStack[] { output };
+                    //?}
                     break;
                 }
             }

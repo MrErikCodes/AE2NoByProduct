@@ -101,7 +101,11 @@ public class ByproductRemoverItem extends Item {
                 continue;
             }
 
+            //? if >=1.21 {
+            /*java.util.List<GenericStack> sparseOutputs = processing.getSparseOutputs();
+            *///?} else {
             GenericStack[] sparseOutputs = processing.getSparseOutputs();
+            //?}
             GenericStack firstOutput = null;
             int outputCount = 0;
             for (GenericStack out : sparseOutputs) {
@@ -118,9 +122,14 @@ public class ByproductRemoverItem extends Item {
                 continue;
             }
 
+            //? if >=1.21 {
+            /*java.util.List<GenericStack> sparseInputs = processing.getSparseInputs();
+            ItemStack reencoded = PatternDetailsHelper.encodeProcessingPattern(sparseInputs, java.util.List.of(firstOutput));
+            *///?} else {
             GenericStack[] sparseInputs = processing.getSparseInputs();
             ItemStack reencoded = PatternDetailsHelper.encodeProcessingPattern(
                 sparseInputs, new GenericStack[] { firstOutput });
+            //?}
             // Never overwrite a valid pattern with a failed/empty encode; leave it untouched.
             if (reencoded == null || reencoded.isEmpty()) {
                 continue;

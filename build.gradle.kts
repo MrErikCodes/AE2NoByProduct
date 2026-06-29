@@ -21,10 +21,14 @@ dependencies {
     "modImplementation"("dev.architectury:architectury-${mod.loader}:${mod.prop("architectury_version")}")
 
     // Applied Energistics 2: full mod at compile + dev runtime so the shared appeng.*-targeting mixin
-    // resolves. The artifact suffix also matches mod.loader (appliedenergistics2-forge/-fabric/-neoforge).
-    "modImplementation"("appeng:appliedenergistics2-${mod.loader}:${mod.prop("ae2_version")}")
-    // GuideME is a hard runtime dependency of AE2; not needed to compile our code.
-    "modRuntimeOnly"("org.appliedenergistics:guideme:${mod.prop("guideme_version")}")
+    // resolves. The artifact name is per-version: 1.20.1 uses appliedenergistics2-<loader>; AE2 19.x
+    // (1.21.1) dropped the loader suffix (NeoForge only). Defaults to the 1.20.1 form.
+    "modImplementation"("appeng:${mod.prop("ae2_artifact", "appliedenergistics2-${mod.loader}")}:${mod.prop("ae2_version")}")
+    // GuideME is a hard runtime dependency of AE2; not needed to compile our code, so it is optional
+    // (omit the property when the dev runtime resolves GuideME another way, e.g. bundled inside AE2).
+    mod.prop("guideme_version", "").takeIf { it.isNotEmpty() }?.let {
+        "modRuntimeOnly"("org.appliedenergistics:guideme:$it")
+    }
 
     if (mod.isFabric) {
         // Team Reborn Energy API: AE2-fabric ships it as a nested jar that loom does not surface on the
