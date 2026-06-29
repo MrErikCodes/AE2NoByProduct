@@ -5,8 +5,10 @@
   "message.ae2nobyproduct.removed": "Removed byproducts from %s pattern(s)",
   "message.ae2nobyproduct.none": "No byproducts to remove",
   "message.ae2nobyproduct.disabled": "Byproduct removal is disabled in the config",
-  "command.ae2nobyproduct.strip_all.not_a_player": "This command must be run by a player.",
-  "command.ae2nobyproduct.strip_all.no_network": "Look at a block in the AE2 network you want to clean, then run the command.",
+  "command.ae2nobyproduct.not_a_player": "This command must be run by a player.",
+  "command.ae2nobyproduct.no_network": "Look at a block in an AE2 network, then run the command.",
+  "command.ae2nobyproduct.inspect.clean": "No byproducts found across %s pattern provider(s) in this network.",
+  "command.ae2nobyproduct.inspect.report": "Found byproducts in %s pattern(s) across %s of %s pattern provider(s); /ae2nobyproduct strip-all would remove them.",
   "command.ae2nobyproduct.strip_all.nothing": "No byproducts to remove in this network.",
   "command.ae2nobyproduct.strip_all.preview": "%s pattern(s) across %s provider(s) would be cleaned. Run the command again within 30 seconds to apply.",
   "command.ae2nobyproduct.strip_all.done": "Removed byproducts from %s pattern(s) across %s provider(s)."

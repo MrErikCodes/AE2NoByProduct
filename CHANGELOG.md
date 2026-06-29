@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-06-29
+
+### Added
+- **`/ae2nobyproduct inspect` command** (operators, permission level 2): a read-only companion to `strip-all` that reports how many patterns in the AE2 network you are looking at have byproducts, without changing anything.
+
 ## [0.3.0] - 2026-06-29
 
 ### Added
@@ -36,7 +41,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Byproduct Remover item: shift + right-click a Pattern Provider to strip byproducts from every processing pattern stored inside it. Works on base AE2 providers and add-on providers (tested with Extended AE and MEGA Cells).
 - Crafting recipe for the Byproduct Remover: 16k Storage Component + Blank Pattern + Crafting Unit (shapeless).
 
-[Unreleased]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/releases/tag/v0.1.0
