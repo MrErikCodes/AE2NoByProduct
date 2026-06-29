@@ -118,7 +118,8 @@ jobs:
           DO_PUBLISH: "false"
           # No RELEASE_TYPE: Stonecraft derives it from mod.version (STABLE for a plain version, BETA/ALPHA
           # for *-beta / *-alpha). Setting RELEASE_TYPE=release fails plugin apply (only STABLE/BETA/ALPHA).
-          MODRINTH_ID: ae2-no-byproduct
+          # MODRINTH_ID must be the project's base62 ID, NOT the slug (the plugin rejects the slug).
+          MODRINTH_ID: QTH2oeRB
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSEFORGE_ID: "1590300"
           CURSEFORGE_SLUG: ae2-no-byproduct
