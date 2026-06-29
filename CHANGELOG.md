@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-06-29
+
+### Fixed
+- The **Byproduct Remover** item now also works on the cable-mounted "panel" Pattern Provider (`ae2:cable_pattern_provider`), not just the full Pattern Provider block. Shift + right-click either form to clean it. (The `/ae2nobyproduct strip-all` and `inspect` commands already covered both forms.)
+
 ## [0.4.0] - 2026-06-29
 
 ### Added
@@ -41,7 +46,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Byproduct Remover item: shift + right-click a Pattern Provider to strip byproducts from every processing pattern stored inside it. Works on base AE2 providers and add-on providers (tested with Extended AE and MEGA Cells).
 - Crafting recipe for the Byproduct Remover: 16k Storage Component + Blank Pattern + Crafting Unit (shapeless).
 
-[Unreleased]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/AE2NoByproduct/AE2NoByproduct/compare/v0.1.0...v0.2.0

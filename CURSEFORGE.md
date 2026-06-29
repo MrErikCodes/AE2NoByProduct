@@ -19,7 +19,7 @@ A small button sits in AE2's native left-hand toolbar (right next to AE2's own b
 It's **per-player**, **server-authoritative** (no client bypass), and your choice is **remembered** across relog, restart, and death. Crafting, smithing, and stonecutting patterns are never touched; they only have one output anyway.
 
 ### 🧹 The Byproduct Remover tool
-Already encoded a bunch of patterns with byproducts? Don't re-do them. Craft the **Byproduct Remover** and **shift + right-click any Pattern Provider**, and every processing pattern stored inside it is instantly re-encoded to keep only its first output. You get a chat message telling you how many were cleaned.
+Already encoded a bunch of patterns with byproducts? Don't re-do them. Craft the **Byproduct Remover** and **shift + right-click any Pattern Provider** (the full block or the cable-mounted panel), and every processing pattern stored inside it is instantly re-encoded to keep only its first output. You get a chat message telling you how many were cleaned.
 
 > Works on AE2's Pattern Providers **and** add-on providers (tested with Extended AE and MEGA Cells).
 

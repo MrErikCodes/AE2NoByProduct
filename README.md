@@ -86,7 +86,7 @@ Your choice is saved automatically. You can close and reopen the terminal, relog
 
 ### The Byproduct Remover tool
 
-For patterns that were *already* encoded with byproducts, craft the **Byproduct Remover** (a shapeless recipe of a **16k Storage Component** + a **Blank Pattern** + a **Crafting Unit**). **Shift + right-click a Pattern Provider** with it, and every processing pattern stored in that provider is re-encoded to keep only its first output. A chat message reports how many patterns were cleaned (this can be silenced; see `showMessages` below). The tool is reusable by default and works on add-on Pattern Providers too, such as Extended AE and MEGA Cells.
+For patterns that were *already* encoded with byproducts, craft the **Byproduct Remover** (a shapeless recipe of a **16k Storage Component** + a **Blank Pattern** + a **Crafting Unit**). **Shift + right-click a Pattern Provider** with it, either the full block or the cable-mounted panel, and every processing pattern stored in that provider is re-encoded to keep only its first output. A chat message reports how many patterns were cleaned (this can be silenced; see `showMessages` below). The tool is reusable by default and works on add-on Pattern Providers too, such as Extended AE and MEGA Cells.
 
 ---
 
